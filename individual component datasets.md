@@ -23,6 +23,10 @@
 **[Sea Surface Temperature Contour Charts](https://www.ospo.noaa.gov/products/ocean/sst/contour/index.html)**
 
 ## Chlorophyll-a Concentration (Phytoplankton Levels)  
+1. **[Earth Engine Chlorophyll-a concentration ](https://developers.google.com/earth-engine/datasets/tags/chlorophyll-a?hl=en)**
+
+
+2.  **[Copernicus Open Access Hub Sentinel Data Chlorophyll-a concentration ](https://browser.dataspace.copernicus.eu/?zoom=10&lat=8.23756&lng=79.81338&themeId=DEFAULT-THEME&visualizationUrl=U2FsdGVkX1%2FHzSaquvakTs84%2BxhyoNrQK2C80EsVGknZI2tvBrreAE473110lcKa7Mt7dBdxNGWKON2A4CiHn%2BfQcsj2l1vsSlDGCM9jYfgZWGQbm4z4sz1Bn%2Fn%2FOZEb&datasetId=S2_L2A_CDAS&fromTime=2024-10-31T00%3A00%3A00.000Z&toTime=2024-10-31T23%3A59%3A59.999Z&layerId=3_NDVI&demSource3D=%22MAPZEN%22&cloudCoverage=30&dateMode=SINGLE)**
 
 ## Geospatial Analysis (Satellite Imagery and Terrain Data)  
 
