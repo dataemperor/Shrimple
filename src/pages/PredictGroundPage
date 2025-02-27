@@ -29,6 +29,8 @@ function PredictGroundPage() {
     });
   };
 
+  //Prediction Page Code
+
   const handleSubmit = async (e) => {
     e.preventDefault();
 
