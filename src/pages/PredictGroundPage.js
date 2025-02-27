@@ -1,22 +1,21 @@
-import React, { useState } from 'react';
+import { useState } from "react";
 
-function Home() {
+function PredictGroundPage() {
   const [formData, setFormData] = useState({
     doc: "",
     ph: "",
     salinity: "",
     transparency: "",
     alkalinity: "",
-  });
-
+  })
   const [prediction, setPrediction] = useState(null);
 
   // Handle input change
   const handleChange = (e) => {
     setFormData({ ...formData, [e.target.name]: e.target.value });
   };
-
   console.log("PredictionPage is rendering");
+
 
   // Simulate prediction fetch
   const handlePredict = () => {
@@ -69,4 +68,4 @@ function Home() {
   );
 }
 
-export default Home;
+export default PredictGroundPage;
