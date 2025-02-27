@@ -1,6 +1,8 @@
 import React, { useState } from 'react';
+import "../styles/predict.css";
 
-function Home() {
+
+function Predict() {
   const [formData, setFormData] = useState({
     doc: "",
     ph: "",
@@ -69,4 +71,4 @@ function Home() {
   );
 }
 
-export default Home;
+export default Predict;

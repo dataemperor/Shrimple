@@ -6,8 +6,9 @@ function Navbar() {
     <nav style={styles.nav}>
       <div style={styles.logo}>Shrimp Predictor</div>
       <ul style={styles.links}>
-        <li><Link to="/" style={styles.link}>Home</Link></li>
-        <li><Link to="/predict-ground" style={styles.link}>Predict Ground</Link></li>
+        <li><Link to="/predict-ground" style={styles.link}>Home</Link></li>
+        <li><Link to="/" style={styles.link}>Predict</Link></li>
+        
         
       </ul>
     </nav>
@@ -15,14 +16,7 @@ function Navbar() {
 }
 
 const styles = {
-  nav: {
-    display: "flex",
-    justifyContent: "space-between",
-    alignItems: "center",
-    padding: "10px 20px",
-    backgroundColor: "#4CAF50",
-    color: "white",
-  },
+
   logo: {
     fontSize: "24px",
     fontWeight: "bold",
@@ -39,6 +33,7 @@ const styles = {
     color: "white",
     fontSize: "18px",
   },
+  
   
 };
 

@@ -1,7 +1,6 @@
 import React from 'react';
 import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
-import Home from './pages/Home';
-import PredictGroundPage from './pages/PredictGroundPage';
+import Predict from './pages/Predict';
 import Navbar from './components/Navbar';
 
 
@@ -11,8 +10,7 @@ function App() {
     <Router>
       <Navbar />
       <Routes>
-        <Route path="/" element={<Home />} />
-        <Route path="/predict" element={<PredictGroundPage />} />
+        <Route path="/" element={<Predict/>} />
       </Routes>
     </Router>
   );

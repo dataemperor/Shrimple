@@ -1,0 +1,96 @@
+/* General Styles */
+body {
+    background-color: #E3F2FD; /* Light Blue */
+    font-family: 'Poppins', sans-serif;
+    color: #2D2D2D; /* Dark Gray for better readability */
+    margin: 0;
+    padding: 0;
+  }
+  
+  /* Navbar */
+  nav {
+    background-color: #FF6F3C; /* Shrimp Orange */
+    padding: 15px 40px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.15);
+  }
+  
+  nav a {
+    color: white;
+    font-size: 18px;
+    font-weight: bold;
+    text-decoration: none;
+    padding: 10px 15px;
+    border-radius: 6px;
+    transition: all 0.3s ease-in-out;
+  }
+  
+  nav a:hover {
+    background-color: #FFA62B; /* Warmer Orange */
+  }
+  
+  /* Centered Container */
+  .container {
+    width: 45%;
+    min-width: 400px;
+    margin: 80px auto; /* Adjusts for Laptop Frame */
+    background: white;
+    padding: 30px;
+    border-radius: 12px;
+    box-shadow: 0px 6px 15px rgba(0, 0, 0, 0.1);
+    text-align: center;
+  }
+  
+  /* Header */
+  h1 {
+    color: #0077B6; /* Deep Blue */
+    font-size: 26px;
+    margin-bottom: 25px;
+  }
+  
+  /* Input Fields */
+  input,
+  select {
+    width: 100%;
+    padding: 12px;
+    margin: 12px 0;
+    border: 2px solid #DADADA;
+    border-radius: 8px;
+    font-size: 16px;
+    transition: all 0.3s ease-in-out;
+  }
+  
+  input:focus,
+  select:focus {
+    border-color: #0077B6; /* Blue Highlight */
+    outline: none;
+    box-shadow: 0px 0px 8px rgba(0, 119, 182, 0.3);
+  }
+  
+  /* Buttons */
+  button {
+    width: 100%;
+    padding: 14px;
+    font-size: 18px;
+    font-weight: bold;
+    color: white;
+    background: linear-gradient(135deg, #FF6F3C, #FFA62B); /* Gradient Shrimp Orange */
+    border: none;
+    border-radius: 8px;
+    cursor: pointer;
+    transition: all 0.3s ease-in-out;
+  }
+  
+  button:hover {
+    background: linear-gradient(135deg, #FFA62B, #FF6F3C); /* Reverse Gradient */
+  }
+  
+  /* Responsive */
+  @media (max-width: 768px) {
+    .container {
+      width: 80%;
+    }
+  }
+  
