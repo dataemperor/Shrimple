@@ -16,6 +16,12 @@ function Navbar() {
               <li className="nav-item-about">
                 <Link className="nav-link active" aria-current="page" to="/About">About</Link>
               </li>
+              <li className="nav-item-predict">
+                <Link className="nav-link active" aria-current="page" to="/Predict">Predict Ground</Link>
+              </li>
+              <li className="nav-item-insights">
+                <Link className="nav-link active" aria-current="page" to="/insights">Data Insights</Link>
+              </li>
               <li className="nav-item-contact">
                 <Link className="nav-link active" aria-current="page" to="/Contact">Contact</Link>
               </li>
