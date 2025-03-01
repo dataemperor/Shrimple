@@ -1,6 +1,7 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
 
+
 function Navbar() {
   return (
     <nav style={styles.nav}>
@@ -8,12 +9,18 @@ function Navbar() {
       <ul style={styles.links}>
         <li><Link to="/predict-ground" style={styles.link}>Home</Link></li>
         <li><Link to="/" style={styles.link}>Predict</Link></li>
+        <li><Link to="/signup">Sign Up</Link></li>
         
         
       </ul>
     </nav>
   );
 }
+
+
+
+
+
 
 const styles = {
 

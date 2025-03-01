@@ -1,0 +1,99 @@
+/* Background Gradient */
+.signup-container {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    min-height: 100vh;
+    background: url('../assests/background2.jpg') no-repeat center center/cover;
+    padding: 20px;
+  }
+  
+  /* Card Styling */
+  .signup-card {
+    width: 100%;
+    max-width: 400px;
+    background: white;
+    padding: 2rem;
+    border-radius: 20px;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+    text-align: center;
+    border: 2px solid #ff7f30;
+  }
+  
+  /* Title & Subtext */
+  .signup-title {
+    font-size: 2rem;
+    font-weight: bold;
+    color: #ff7f30;
+    margin-bottom: 0.5rem;
+  }
+  
+  .signup-subtext {
+    color: #555;
+    margin-bottom: 1.5rem;
+  }
+  
+  /* Input Fields */
+  .input-group {
+    position: relative;
+    margin-bottom: 1rem;
+  }
+  
+  .input-icon {
+    position: absolute;
+    left: 12px;
+    top: 50%;
+    transform: translateY(-50%);
+    color: #ff7f30;
+  }
+  
+  .signup-input {
+    width: 85%;
+    padding: 12px 14px 12px 40px;
+    border: 2px solid #ff7f30;
+    border-radius: 25px;
+    background: #ffeedb;
+    outline: none;
+    font-size: 1rem;
+    transition: 0.3s;
+  }
+  
+  .signup-input:focus {
+    border-color: #4aeadc;
+    background: white;
+  }
+  
+  /* Sign Up Button */
+  .signup-button {
+    width: 100%;
+    padding: 12px;
+    background: #ff7f30;
+    color: white;
+    font-weight: bold;
+    border: none;
+    border-radius: 25px;
+    cursor: pointer;
+    transition: 0.3s;
+  }
+  
+  .signup-button:hover {
+    background: #e06c25;
+  }
+  
+  /* Sign In Link */
+  .signup-footer {
+    margin-top: 1rem;
+    color: #555;
+  }
+  
+  .signin-link {
+    color: #ff7f30;
+    font-weight: bold;
+    text-decoration: none;
+    transition: 0.3s;
+  }
+  
+  .signin-link:hover {
+    color: #4aeadc;
+  }
+  

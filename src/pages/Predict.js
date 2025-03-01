@@ -20,7 +20,7 @@ function Predict() {
 
   const handlePredict = () => {
     const randomScore = Math.floor(Math.random() * 10) + 1;
-    setPrediction(`Prediction Score: ${randomScore} / 10 ✅`);
+    setPrediction(`Your ground is good for Shrimp Harvesting`);
   };
 
   const inputFields = [
