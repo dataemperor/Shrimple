@@ -1,6 +1,7 @@
-import React, { useState } from 'react';
+import React, { useState } from "react";
 import "../styles/predict.css";
-
+import { Droplet, FlaskConical, Waves, Eye, AlignLeft } from "lucide-react";
+import bgImage from "../assests/backroundShrimp.jpg"; // Fixed import
 
 function Predict() {
   const [formData, setFormData] = useState({
@@ -13,55 +14,59 @@ function Predict() {
 
   const [prediction, setPrediction] = useState(null);
 
-  // Handle input change
   const handleChange = (e) => {
     setFormData({ ...formData, [e.target.name]: e.target.value });
   };
 
-  console.log("PredictionPage is rendering");
-
-  // Simulate prediction fetch
   const handlePredict = () => {
     const randomScore = Math.floor(Math.random() * 10) + 1;
     setPrediction(`Prediction Score: ${randomScore} / 10 ✅`);
   };
 
-  return (
-    <div className="flex justify-center items-center min-h-screen bg-gray-100 p-4">
-      <div className="w-full max-w-lg bg-white shadow-lg p-6 rounded-lg">
-        <h2 className="text-center text-2xl font-semibold mb-4">
-          Shrimp Harvest Prediction
-        </h2>
+  const inputFields = [
+    { name: "doc", label: "Dissolved Oxygen", icon: <Droplet className="input-icon" /> },
+    { name: "ph", label: "pH Level", icon: <FlaskConical className="input-icon" /> },
+    { name: "salinity", label: "Salinity", icon: <Waves className="input-icon" /> },
+    { name: "transparency", label: "Water Transparency", icon: <Eye className="input-icon" /> },
+    { name: "alkalinity", label: "Alkalinity", icon: <AlignLeft className="input-icon" /> },
+  ];
 
-        {/* Input Fields */}
-        <div className="space-y-4">
-          {Object.keys(formData).map((key) => (
-            <div key={key}>
-              <label className="block text-sm font-medium text-gray-700 capitalize">
-                {key}
-              </label>
-              <input
-                type="number"
-                name={key}
-                value={formData[key]}
-                onChange={handleChange}
-                placeholder={`Enter ${key}`}
-                className="mt-1 p-2 w-full border rounded-md"
-              />
+  const pageStyle = {
+    backgroundImage: `url(${bgImage})`,
+    backgroundSize: "cover",
+    backgroundPosition: "center",
+    minHeight: "100vh",
+  };
+
+  return (
+    <div className="predict-container" style={pageStyle}>
+      <div className="predict-card">
+        <h2 className="predict-title">Shrimp Harvest Prediction</h2>
+
+        <div className="form-group">
+          {inputFields.map(({ name, label, icon }) => (
+            <div key={name} className="input-group">
+              <label className="input-label">{label}</label>
+              <div className="input-wrapper">
+                {icon}
+                <input
+                  type="number"
+                  name={name}
+                  value={formData[name]}
+                  onChange={handleChange}
+                  placeholder={`Enter ${label}`}
+                  className="input-field"
+                />
+              </div>
             </div>
           ))}
 
-          {/* Predict Button */}
-          <button
-            className="w-full mt-2 bg-blue-600 text-white py-2 px-4 rounded-md hover:bg-blue-700 transition"
-            onClick={handlePredict}
-          >
+          <button className="predict-button" onClick={handlePredict}>
             Predict
           </button>
 
-          {/* Display Prediction */}
           {prediction && (
-            <div className="mt-4 p-3 text-center text-lg font-semibold bg-blue-100 text-blue-700 rounded-md">
+            <div className="prediction-result">
               {prediction}
             </div>
           )}
