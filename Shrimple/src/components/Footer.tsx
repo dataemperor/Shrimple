@@ -3,7 +3,7 @@ import {Link} from "react-router-dom";
 const Footer = () => {
     return (
         <>
-        <footer className="text-center py-3 mt-auto">
+        <footer className="footer">
             <div className="container">
                 <p className="mb-0">
                     &copy; {new Date().getFullYear()} Shrimple. All rights reserved.

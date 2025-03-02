@@ -2,7 +2,7 @@ import {Link} from "react-router-dom";
 
 function Navbar() {
     return (
-      <nav className="navbar navbar-expand-lg bg-body-tertiary">
+      <nav className="navbar navbar-expand-lg">
         <div className="container-fluid">
           <a className="navbar-brand" href="#">
             <img src="/shrimple.png" alt="logo" width="30" height="30" className="d-inline-block align-text-top"/>
