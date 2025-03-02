@@ -34,7 +34,7 @@ function SignUp() {
 
         <form onSubmit={handleSubmit} className="signup-form">
           <div className="input-group">
-            <FaUser className="input-icon" />
+            <FaUser className="input-icon-su" />
             <input
               type="text"
               name="name"
@@ -47,7 +47,7 @@ function SignUp() {
           </div>
 
           <div className="input-group">
-            <FaEnvelope className="input-icon" />
+            <FaEnvelope className="input-icon-su" />
             <input
               type="email"
               name="email"
@@ -60,7 +60,7 @@ function SignUp() {
           </div>
 
           <div className="input-group">
-            <FaLock className="input-icon" />
+            <FaLock className="input-icon-su" />
             <input
               type="password"
               name="password"
