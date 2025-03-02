@@ -1,4 +1,4 @@
-const Card = (
+const MemberCard = (
     {name, contactNumber, email, linkedIn}: 
     {name:string, contactNumber:string, email:String, linkedIn:string}) => {
     return (
@@ -14,4 +14,4 @@ const Card = (
     )
 }
 
-export default Card;
+export default MemberCard;
