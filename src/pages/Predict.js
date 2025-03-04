@@ -18,9 +18,18 @@ function Predict() {
     setFormData({ ...formData, [e.target.name]: e.target.value });
   };
 
-  const handlePredict = () => {
-    const randomScore = Math.floor(Math.random() * 10) + 1;
-    setPrediction(`Your ground is good for Shrimp Harvesting`);
+  const handlePredict = async () => {
+    try {
+      const response = await fetch('http://localhost:5000/predict', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(formData),
+      });
+      const result = await response.json();
+      setPrediction(result.prediction);
+    } catch (error) {
+      console.error("Error:", error);
+    }
   };
 
   const inputFields = [

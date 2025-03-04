@@ -1,8 +1,10 @@
 from flask import Flask, request, jsonify
+from flask_cors import CORS
 import pandas as pd
 import joblib
 
 app = Flask(__name__)
+CORS(app)  # Allow cross-origin requests
 
 # Load your trained model
 model = joblib.load('random_forest_model.pkl')
