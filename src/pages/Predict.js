@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import "../styles/predict.css";
 import { Droplet, FlaskConical, Waves, Eye, AlignLeft } from "lucide-react";
-import bgImage from "../assests/backroundShrimp.jpg"; // Fixed import
+import bgImage from "../assests/back1.jpg"; // Fixed "assets" typo
 
 function Predict() {
   const [formData, setFormData] = useState({
@@ -13,24 +13,40 @@ function Predict() {
   });
 
   const [prediction, setPrediction] = useState(null);
+  const [loading, setLoading] = useState(false);
+  const [error, setError] = useState(null);
 
   const handleChange = (e) => {
     setFormData({ ...formData, [e.target.name]: e.target.value });
   };
 
-  const handlePredict = async () => {
+  const handlePredict = async (e) => {
+    e.preventDefault();
+    setLoading(true);
+    setError(null);
+
     try {
-      const response = await fetch('http://localhost:5000/predict', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify(formData),
-      });
-      const result = await response.json();
-      setPrediction(result.prediction);
+        console.log("Sending Data to API:", formData); // Debugging
+
+        const response = await fetch("http://localhost:5000/save-prediction", {
+            method: "POST",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify(formData),
+        });
+
+        const result = await response.json();
+        console.log("Received Response:", result); // Debugging
+
+        if (result.error) throw new Error(result.error);
+
+        setPrediction(result.prediction);
     } catch (error) {
-      console.error("Error:", error);
+        setError("Failed to save prediction. Please try again.");
+        console.error("Error:", error);
+    } finally {
+        setLoading(false);
     }
-  };
+};
 
   const inputFields = [
     { name: "doc", label: "Dissolved Oxygen", icon: <Droplet className="input-icon" /> },
@@ -46,6 +62,7 @@ function Predict() {
     backgroundPosition: "center",
     minHeight: "100vh",
   };
+   
 
   return (
     <div className="predict-container" style={pageStyle}>
@@ -70,13 +87,15 @@ function Predict() {
             </div>
           ))}
 
-          <button className="predict-button" onClick={handlePredict}>
-            Predict
+          <button className="predict-button" onClick={handlePredict} disabled={loading}>
+            {loading ? "Predicting..." : "Predict"}
           </button>
 
-          {prediction && (
+          {error && <p className="error-message">{error}</p>}
+
+          {prediction !== null && (
             <div className="prediction-result">
-              {prediction}
+              <strong>Predicted Output:</strong> {prediction}
             </div>
           )}
         </div>

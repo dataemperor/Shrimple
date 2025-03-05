@@ -1,21 +1,24 @@
-from flask import Flask, request, jsonify
-from flask_cors import CORS
-import pandas as pd
-import joblib
+from flask import Flask, jsonify
+from pymongo import MongoClient
 
 app = Flask(__name__)
-CORS(app)  # Allow cross-origin requests
 
-# Load your trained model
-model = joblib.load('random_forest_model.pkl')
+# MongoDB connection string (same as in MongoDB Compass)
+mongo_uri = "mongodb://localhost:27017"
 
-@app.route('/predict', methods=['POST'])
-def predict():
-    data = request.get_json()
-    input_data = [data['doc'], data['ph'], data['salinity'], data['transparency'], data['alkalinity']]
-    df = pd.DataFrame([input_data], columns=['Dissolved Oxygen', 'pH', 'Salinity', 'Transparency', 'Alkalinity'])
-    prediction = model.predict(df)
-    return jsonify({'prediction': prediction[0]})
+# Connect to MongoDB
+client = MongoClient(mongo_uri)  # Updated line
 
-if __name__ == '__main__':
+
+# Access the database and collection
+db = client["your_database_name"]
+collection = db["your_collection_name"]
+
+@app.route('/')
+def test_connection():
+    # Insert a test document into the collection
+    collection.insert_one({"test": "Hello from Flask and MongoDB!"})
+    return jsonify({"message": "Document inserted successfully!"})
+
+if __name__ == "__main__":
     app.run(debug=True)
