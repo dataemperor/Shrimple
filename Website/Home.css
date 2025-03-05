@@ -1,0 +1,41 @@
+*{
+    margin: 0;
+    padding: 0;
+}
+.header{
+    min-height: 100vh;
+    width: 100%;
+    background-image: linear-gradient(to top, rgba(0,0,0,0.2)50%, rgba(0,0,0,0.2)50%), url(images/image2.jpg);
+    background-position: center;
+    background-size: cover;
+    position: relative;
+}
+.navbar{
+    width: 1200px;
+    height: 75px;
+    margin: auto;
+}
+.icon{
+    width: 200px;
+    float: left;
+    height: 70px;
+}
+.logo{
+    color: #FF7043;
+    font-size: 30px;
+    font-family: 'Montserrat', sans-serif;
+    padding-left: 20px;
+    float: left;
+    padding-top: 10px;
+}
+.menu{
+    width: 400px;
+    float: left;
+    height: 70px;
+}
+.ul{
+    float: left;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
