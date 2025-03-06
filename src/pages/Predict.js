@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import "../styles/predict.css";
 import { Droplet, FlaskConical, Waves, Eye, AlignLeft } from "lucide-react";
-import bgImage from "../assests/back1.jpg"; // Fixed "assets" typo
+import bgImage from "../assests/back1.jpg"; // Retained the correct folder name
 
 function Predict() {
   const [formData, setFormData] = useState({
@@ -26,27 +26,31 @@ function Predict() {
     setError(null);
 
     try {
-        console.log("Sending Data to API:", formData); // Debugging
+      console.log("Sending Data to API:", formData); // Debugging
 
-        const response = await fetch("http://localhost:5000/save-prediction", {
-            method: "POST",
-            headers: { "Content-Type": "application/json" },
-            body: JSON.stringify(formData),
-        });
+      const response = await fetch("http://127.0.0.1:5000/predict", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify(formData),
+      });
 
-        const result = await response.json();
-        console.log("Received Response:", result); // Debugging
+      if (!response.ok) {
+        throw new Error('Network response was not ok');
+      }
 
-        if (result.error) throw new Error(result.error);
+      const result = await response.json();
+      console.log("Received Response:", result); // Debugging
 
-        setPrediction(result.prediction);
+      if (result.error) throw new Error(result.error);
+
+      setPrediction(result.prediction);
     } catch (error) {
-        setError("Failed to save prediction. Please try again.");
-        console.error("Error:", error);
+      setError("Failed to fetch prediction. Please try again.");
+      console.error("Error:", error);
     } finally {
-        setLoading(false);
+      setLoading(false);
     }
-};
+  };
 
   const inputFields = [
     { name: "doc", label: "Dissolved Oxygen", icon: <Droplet className="input-icon" /> },
@@ -62,7 +66,6 @@ function Predict() {
     backgroundPosition: "center",
     minHeight: "100vh",
   };
-   
 
   return (
     <div className="predict-container" style={pageStyle}>
