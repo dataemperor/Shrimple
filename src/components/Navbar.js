@@ -17,11 +17,6 @@ function Navbar() {
   );
 }
 
-
-
-
-
-
 const styles = {
 
   logo: {

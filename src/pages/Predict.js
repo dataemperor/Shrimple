@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import "../styles/predict.css";
 import { Droplet, FlaskConical, Waves, Eye, AlignLeft } from "lucide-react";
-import bgImage from "../assests/backroundShrimp.jpg"; // Fixed import
+import bgImage from "../assests/back1.jpg"; // Retained the correct folder name
 
 function Predict() {
   const [formData, setFormData] = useState({
@@ -13,22 +13,42 @@ function Predict() {
   });
 
   const [prediction, setPrediction] = useState(null);
+  const [loading, setLoading] = useState(false);
+  const [error, setError] = useState(null);
 
   const handleChange = (e) => {
     setFormData({ ...formData, [e.target.name]: e.target.value });
   };
 
-  const handlePredict = async () => {
+  const handlePredict = async (e) => {
+    e.preventDefault();
+    setLoading(true);
+    setError(null);
+
     try {
-      const response = await fetch('http://localhost:5000/predict', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
+      console.log("Sending Data to API:", formData); // Debugging
+
+      const response = await fetch("http://127.0.0.1:5000/predict", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
         body: JSON.stringify(formData),
       });
+
+      if (!response.ok) {
+        throw new Error('Network response was not ok');
+      }
+
       const result = await response.json();
+      console.log("Received Response:", result); // Debugging
+
+      if (result.error) throw new Error(result.error);
+
       setPrediction(result.prediction);
     } catch (error) {
+      setError("Failed to fetch prediction. Please try again.");
       console.error("Error:", error);
+    } finally {
+      setLoading(false);
     }
   };
 
@@ -70,13 +90,15 @@ function Predict() {
             </div>
           ))}
 
-          <button className="predict-button" onClick={handlePredict}>
-            Predict
+          <button className="predict-button" onClick={handlePredict} disabled={loading}>
+            {loading ? "Predicting..." : "Predict"}
           </button>
 
-          {prediction && (
+          {error && <p className="error-message">{error}</p>}
+
+          {prediction !== null && (
             <div className="prediction-result">
-              {prediction}
+              <strong>Predicted Output:</strong> {prediction}
             </div>
           )}
         </div>
