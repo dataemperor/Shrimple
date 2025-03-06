@@ -2,7 +2,7 @@ require("dotenv").config();
 const express = require("express");
 const mongoose = require("mongoose");
 const cors = require("cors");
-const joblib = require("joblib");
+const axios = require("axios"); // Use axios for HTTP requests
 
 const app = express();
 app.use(cors());
@@ -23,14 +23,16 @@ const predictionSchema = new mongoose.Schema({
     salinity: Number,
     transparency: Number,
     alkalinity: Number,
-    prediction: Number, // Store the prediction result in DB
+    prediction: String, // Store the prediction result as a string
     createdAt: { type: Date, default: Date.now },
 });
 
 const Prediction = mongoose.model("Prediction", predictionSchema);
 
-// Load Random Forest Model (make sure the file is in the right path)
-const rfModel = joblib.load('random_forest_model.pkl');
+// Root Route
+app.get("/", (req, res) => {
+    res.send("Welcome to the Shrimp Prediction API!");
+});
 
 // API Route to Save Data and Make Prediction
 app.post("/predict", async (req, res) => {
@@ -42,11 +44,12 @@ app.post("/predict", async (req, res) => {
             return res.status(400).json({ error: "All fields are required" });
         }
 
-        // Prepare input for the model (convert to an array format that the model expects)
-        const inputFeatures = [[doc, ph, salinity, transparency, alkalinity]];
+        // Call the Flask service for prediction
+        const response = await axios.post('http://127.0.0.1:5001/predict', {
+            doc, ph, salinity, transparency, alkalinity
+        });
 
-        // Make prediction using the Random Forest model
-        const prediction = rfModel.predict(inputFeatures);
+        const predictionLabel = response.data.prediction;
 
         // Save the prediction and inputs to MongoDB
         const newPrediction = new Prediction({
@@ -55,12 +58,12 @@ app.post("/predict", async (req, res) => {
             salinity,
             transparency,
             alkalinity,
-            prediction: prediction[0], // Store the predicted result
+            prediction: predictionLabel, // Store the predicted result as a string
         });
 
         await newPrediction.save();
 
-        res.json({ prediction: prediction[0] });
+        res.json({ prediction: predictionLabel });
 
     } catch (error) {
         console.error("Prediction error:", error);
