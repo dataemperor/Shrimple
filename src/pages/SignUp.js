@@ -19,6 +19,11 @@ function SignUp() {
     console.log("User Signed Up:", formData);
   };
 
+  const handleSignIn = () => {
+    // Handle the sign-in action
+    console.log("Navigating to Sign In page");
+  };
+
   const pageStyle = {
     backgroundImage: `url(${bgImage1})`,
     backgroundSize: "cover",
@@ -27,7 +32,7 @@ function SignUp() {
   };
 
   return (
-    <div className="signup-container">
+    <div className="signup-container" style={pageStyle}>
       <div className="signup-card">
         <h2 className="signup-title">Sign Up</h2>
         <p className="signup-subtext">Just a few quick questions to get you started!</p>
@@ -76,7 +81,7 @@ function SignUp() {
         </form>
 
         <p className="signup-footer">
-          Already have an account? <a href="#" className="signin-link">Sign In</a>
+          Already have an account? <button onClick={handleSignIn} className="signin-link">Sign In</button>
         </p>
       </div>
     </div>

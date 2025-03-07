@@ -11,7 +11,7 @@
 /* Card Styling */
 .predict-card {
   background: rgba(255, 255, 255, 0.9);
-  backdrop-filter: blur(10px);
+  backdrop-filter: blur(0px);
   border-radius: 12px;
   padding: 30px;
   box-shadow: 0px 10px 30px rgba(0, 0, 0, 0.15);
