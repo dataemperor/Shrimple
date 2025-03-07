@@ -1,7 +1,12 @@
-import React, { useState } from "react";
-import "../styles/predict.css";
+import React, { useState, useEffect, useRef } from "react";
+import { Chart, CategoryScale, LinearScale, BarController, BarElement } from "chart.js";
 import { Droplet, FlaskConical, Waves, Eye, AlignLeft } from "lucide-react";
-import bgImage from "../assests/back1.jpg"; // Retained the correct folder name
+import bgImage from "../assests/back1.jpg";
+import "../styles/predict.css"; // Import external CSS
+import ErrorBoundary from "./ErrorBoundary";  // Import the Error Boundary
+
+// Register the required components with Chart.js
+Chart.register(CategoryScale, LinearScale, BarController, BarElement);
 
 function Predict() {
   const [formData, setFormData] = useState({
@@ -13,8 +18,11 @@ function Predict() {
   });
 
   const [prediction, setPrediction] = useState(null);
+  const [confidence, setConfidence] = useState(null);
+  const [graphData, setGraphData] = useState(null);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState(null);
+  const chartRef = useRef(null);  // Create a ref for the chart
 
   const handleChange = (e) => {
     setFormData({ ...formData, [e.target.name]: e.target.value });
@@ -26,8 +34,6 @@ function Predict() {
     setError(null);
 
     try {
-      console.log("Sending Data to API:", formData); // Debugging
-
       const response = await fetch("http://127.0.0.1:5000/predict", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
@@ -35,22 +41,51 @@ function Predict() {
       });
 
       if (!response.ok) {
-        throw new Error('Network response was not ok');
+        throw new Error("Network response was not ok");
       }
 
       const result = await response.json();
-      console.log("Received Response:", result); // Debugging
 
       if (result.error) throw new Error(result.error);
 
       setPrediction(result.prediction);
+      setConfidence(result.confidence);
+      setGraphData({
+        labels: result.graph_data.labels,
+        datasets: [
+          {
+            label: "Feature Importance",
+            data: result.graph_data.values,
+            backgroundColor: ["#4CAF50", "#2196F3", "#FF5722", "#FFC107", "#9C27B0"]
+          }
+        ]
+      });
     } catch (error) {
       setError("Failed to fetch prediction. Please try again.");
-      console.error("Error:", error);
     } finally {
       setLoading(false);
     }
   };
+
+  useEffect(() => {
+    // Destroy the old chart instance before creating a new one
+    if (chartRef.current) {
+      chartRef.current.destroy();
+    }
+    if (graphData) {
+      const ctx = document.getElementById("myChart").getContext("2d");
+      chartRef.current = new Chart(ctx, {
+        type: "bar",
+        data: graphData,
+        options: {
+          responsive: true,
+          plugins: {
+            legend: { display: true, position: "top" },
+          },
+        },
+      });
+    }
+  }, [graphData]);
 
   const inputFields = [
     { name: "doc", label: "Dissolved Oxygen", icon: <Droplet className="input-icon" /> },
@@ -69,40 +104,50 @@ function Predict() {
 
   return (
     <div className="predict-container" style={pageStyle}>
-      <div className="predict-card">
-        <h2 className="predict-title">Shrimp Harvest Prediction</h2>
+      <ErrorBoundary>  {/* Wrap your component tree with ErrorBoundary */}
+        <div className="predict-card">
+          <h2 className="predict-title">Shrimp Harvest Prediction</h2>
 
-        <div className="form-group">
-          {inputFields.map(({ name, label, icon }) => (
-            <div key={name} className="input-group">
-              <label className="input-label">{label}</label>
-              <div className="input-wrapper">
-                {icon}
-                <input
-                  type="number"
-                  name={name}
-                  value={formData[name]}
-                  onChange={handleChange}
-                  placeholder={`Enter ${label}`}
-                  className="input-field"
-                />
+          <div className="form-group">
+            {inputFields.map(({ name, label, icon }) => (
+              <div key={name} className="input-group">
+                <label className="input-label">{label}</label>
+                <div className="input-wrapper">
+                  {icon}
+                  <input
+                    type="number"
+                    name={name}
+                    value={formData[name]}
+                    onChange={handleChange}
+                    placeholder={`Enter ${label}`}
+                    className="input-field"
+                  />
+                </div>
               </div>
-            </div>
-          ))}
+            ))}
 
-          <button className="predict-button" onClick={handlePredict} disabled={loading}>
-            {loading ? "Predicting..." : "Predict"}
-          </button>
+            <button className="predict-button" onClick={handlePredict} disabled={loading}>
+              {loading ? "Predicting..." : "Predict"}
+            </button>
 
-          {error && <p className="error-message">{error}</p>}
+            {error && <p className="error-message">{error}</p>}
 
-          {prediction !== null && (
-            <div className="prediction-result">
-              <strong>Predicted Output:</strong> {prediction}
-            </div>
-          )}
+            {prediction !== null && (
+              <div className="prediction-result">
+                <strong>Predicted Output:</strong> {prediction}
+                <p><strong>Confidence:</strong> {confidence}%</p>
+              </div>
+            )}
+
+            {graphData && (
+              <div className="graph-container">
+                <h3>Feature Importance</h3>
+                <canvas id="myChart"></canvas>
+              </div>
+            )}
+          </div>
         </div>
-      </div>
+      </ErrorBoundary>
     </div>
   );
 }
