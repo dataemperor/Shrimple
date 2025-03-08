@@ -1,7 +1,7 @@
 import React from 'react';
 import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
 import Predict from './pages/Predict';
-import SignUp from './pages/SignUp';  // Import the SignUp page
+import SignUp from './pages/CustomSignUp';  // Import the SignUp page
 import Navbar from './components/Navbar';
 import Footer from './components/Footer';  // Import the Footer component
 
