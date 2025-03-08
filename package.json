@@ -16,6 +16,7 @@
     "react-router-dom": "^7.1.3",
     "react-scripts": "^5.0.1",
     "resolve-url-loader": "^5.0.0",
+    "sonner": "^2.0.1",
     "svgo": "^3.3.2",
     "web-vitals": "^4.2.4"
   },
