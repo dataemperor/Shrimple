@@ -34,6 +34,11 @@ def predict():
         if not all(k in data for k in ('doc', 'ph', 'salinity', 'transparency', 'alkalinity')):
             return jsonify({'error': 'Missing required fields'}), 400
 
+        # Validate location data
+        location = data.get('location', None)  # Optional location field
+        if location and ('latitude' not in location or 'longitude' not in location):
+            return jsonify({'error': 'Location data is incomplete'}), 400
+
         # Prepare data for prediction
         features = np.array([[float(data['doc']), float(data['ph']), float(data['salinity']), 
                               float(data['transparency']), float(data['alkalinity'])]])
@@ -55,6 +60,7 @@ def predict():
             'transparency': data['transparency'],
             'alkalinity': data['alkalinity'],
             'prediction': prediction_label,
+            'location': location,  # Add location to the MongoDB record
             'createdAt': datetime.datetime.now()
         }
         predictions_collection.insert_one(prediction_data)
