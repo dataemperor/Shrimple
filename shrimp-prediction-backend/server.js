@@ -24,6 +24,10 @@ const predictionSchema = new mongoose.Schema({
     transparency: Number,
     alkalinity: Number,
     prediction: String, // Store the prediction result as a string
+    location: { // Add location to the schema
+        latitude: Number,
+        longitude: Number,
+    },
     createdAt: { type: Date, default: Date.now },
 });
 
@@ -37,7 +41,7 @@ app.get("/", (req, res) => {
 // API Route to Save Data and Make Prediction
 app.post("/predict", async (req, res) => {
     try {
-        const { doc, ph, salinity, transparency, alkalinity } = req.body;
+        const { doc, ph, salinity, transparency, alkalinity, location } = req.body;
 
         // Validate inputs
         if (!doc || !ph || !salinity || !transparency || !alkalinity) {
@@ -46,10 +50,10 @@ app.post("/predict", async (req, res) => {
 
         // Call the Flask service for prediction
         const response = await axios.post('http://127.0.0.1:5001/predict', {
-            doc, ph, salinity, transparency, alkalinity
+            doc, ph, salinity, transparency, alkalinity, location, // Pass location to Flask
         });
 
-        const predictionLabel = response.data.prediction;
+        const { prediction, confidence, graph_data } = response.data;
 
         // Save the prediction and inputs to MongoDB
         const newPrediction = new Prediction({
@@ -58,12 +62,13 @@ app.post("/predict", async (req, res) => {
             salinity,
             transparency,
             alkalinity,
-            prediction: predictionLabel, // Store the predicted result as a string
+            prediction, // Store the predicted result as a string
+            location, // Save location
         });
 
         await newPrediction.save();
 
-        res.json({ prediction: predictionLabel });
+        res.json({ prediction, confidence, graph_data });
 
     } catch (error) {
         console.error("Prediction error:", error);
