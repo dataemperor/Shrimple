@@ -1,29 +1,33 @@
-import {Link} from "react-router-dom";
+import React from "react";
+import { Github, Twitter, Linkedin } from "lucide-react";
+import "../styles/footer.css";
 
-const Footer = () => {
-    return (
-        <>
-        <footer className="text-center py-3 mt-auto">
-            <div className="container">
-                <p className="mb-0">
-                    &copy; {new Date().getFullYear()} Shrimple. All rights reserved.
-                </p>
-
-                <div className="mb-0">
-                    <Link aria-current="page" to="/PrivacyPolicy">Privacy Policy </Link>
-                </div>
-
-                <div className="mb-0">
-                    <Link aria-current="page" to="/TermsOfService">Terms of Service </Link>
-                </div>
-
-                <div className="mb-0">
-                    <Link aria-current="page" to="/ContactInfo">Contact Info</Link>
-                </div>
-            </div>
-        </footer>
-        </>
-    );
+function Footer() {
+  return (
+    <footer className="footer">
+      <div className="footer-content">
+        <p className="footer-text">
+          © {new Date().getFullYear()} Shrimp Harvest Predictor. All rights reserved.
+        </p>
+        <div className="footer-links">
+          <a href="/privacy" className="footer-link">Privacy Policy</a>
+          <a href="/terms" className="footer-link">Terms of Service</a>
+        </div>
+        <div className="footer-socials">
+          <a href="https://github.com/your-repo" target="_blank" rel="noopener noreferrer">
+            <Github className="social-icon" />
+          </a>
+          <a href="https://twitter.com/your-profile" target="_blank" rel="noopener noreferrer">
+            <Twitter className="social-icon" />
+          </a>
+          <a href="https://linkedin.com/in/your-profile" target="_blank" rel="noopener noreferrer">
+            <Linkedin className="social-icon" />
+          </a>
+        </div>
+      </div>
+    </footer>
+  );
 }
 
+//add footer
 export default Footer;
