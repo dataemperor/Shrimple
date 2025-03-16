@@ -57,7 +57,7 @@ const CustomSignUp = () => {
       </Link>
       <h2 className="custom-signup-title">Create Account</h2>
       <p className="custom-signup-subtitle">
-        Join ShrimpSense for better aquaculture insights
+        Join Shrimple for better aquaculture insights
       </p>
     </div>
 

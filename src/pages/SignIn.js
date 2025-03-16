@@ -49,7 +49,7 @@ const SignIn = () => {
           </Link>
           <h2 className="custom-signup-title">Sign In</h2>
           <p className="custom-signup-subtitle">
-            Welcome back to ShrimpSense
+            Welcome back to Shrimple
           </p>
         </div>
 
