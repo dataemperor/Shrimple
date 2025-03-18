@@ -24,6 +24,7 @@ db = client.shrimple
 predictions_collection = db.predictions
 
 # Route to handle prediction
+# Route to handle prediction
 @app.route('/predict', methods=['POST'])
 def predict():
     try:
@@ -39,13 +40,38 @@ def predict():
         if location and ('latitude' not in location or 'longitude' not in location):
             return jsonify({'error': 'Location data is incomplete'}), 400
 
-        # Prepare data for prediction
-        features = np.array([[float(data['doc']), float(data['ph']), float(data['salinity']), 
-                              float(data['transparency']), float(data['alkalinity'])]])
+        # Convert inputs to float
+        doc = float(data['doc'])
+        ph = float(data['ph'])
+        salinity = float(data['salinity'])
+        transparency = float(data['transparency'])
+        alkalinity = float(data['alkalinity'])
+
+        if doc<3:
+            return jsonify({'prediction':'Unbreedable Shrimp Zone','reason':'DOC is below the acceptable threshold'}), 200
+
+
+        # Define hard reject ranges (extreme values)
+        hard_limits = {
+            "ph": (4, 10),
+            "salinity": (0, 50),
+            "transparency": (0, 100),
+            "alkalinity": (0, 500),
+        }
+
+        # Check if any input is completely unrealistic
+        for param, (min_limit, max_limit) in hard_limits.items():
+            if locals()[param] < min_limit or locals()[param] > max_limit:
+                return jsonify({'prediction': 'Non-Harvestable Shrimp Zone', 'reason': f'{param} is completely out of range'}), 200
+
+        
+
+        # Prepare data for model prediction
+        features = np.array([[doc, ph, salinity, transparency, alkalinity]])
 
         # Predict using the trained model
         prediction = model.predict(features)[0]
-        prediction_label = "Breedable" if prediction == 1 else "Not Breedable"
+        prediction_label = "Harvestable Shrimp Zone" if prediction == 1 else "Non-Harvestable Shrimp Zone"
 
         # Calculate feature importance dynamically (using SHAP)
         explainer = shap.TreeExplainer(model)
@@ -54,11 +80,11 @@ def predict():
 
         # Record user input and prediction result in MongoDB
         prediction_data = {
-            'doc': data['doc'],
-            'ph': data['ph'],
-            'salinity': data['salinity'],
-            'transparency': data['transparency'],
-            'alkalinity': data['alkalinity'],
+            'doc': doc,
+            'ph': ph,
+            'salinity': salinity,
+            'transparency': transparency,
+            'alkalinity': alkalinity,
             'prediction': prediction_label,
             'location': location,  # Add location to the MongoDB record
             'createdAt': datetime.datetime.now()
@@ -77,6 +103,8 @@ def predict():
 
     except Exception as e:
         return jsonify({'error': str(e)}), 500
+
+
 
 if __name__ == "__main__":
     app.run(debug=True)
