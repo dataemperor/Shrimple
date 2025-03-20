@@ -29,6 +29,11 @@ function Navbar() {
                 <Link className="nav-link active" aria-current="page" to="/Contact">Contact</Link>
               </li>
             </ul>
+            <div className="nav-item-contact">
+              <Link className="btn btn-primary" to="/CustomSignUp">
+                Sign Up
+              </Link>
+            </div>
           </div>
         </div>
       </nav>
