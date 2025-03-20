@@ -2,6 +2,9 @@ import { BrowserRouter as Router, Routes, Route, Navigate} from "react-router-do
 import About from "../pages/About";
 import Contact from "../pages/Contact";
 import Home from "../pages/Home";
+import Predict from "../pages/Predict";
+import SignIn from "../pages/SignIn";
+import CustomSignUp from "../pages/CustomSignUp";
 
 const AppRoutes = () => {
     return (
@@ -9,6 +12,9 @@ const AppRoutes = () => {
             <Route path="/" element={<Home />} /> 
             <Route path="/about" element={<About />} />
             <Route path="/contact" element={<Contact />} />
+            <Route path="/predict" element={<Predict />} />
+            <Route path="/SignIn" element={<SignIn />} />
+            <Route path="/CustomSignUp" element={<CustomSignUp />} />
             <Route path="*" element={<Navigate to="/"/>} />
         </Routes>
     );
