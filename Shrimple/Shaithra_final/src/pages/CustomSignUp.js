@@ -1,5 +1,6 @@
 import React, { useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
+import axios from "axios";
 import { Mail, Lock, User, Loader2, ArrowRight } from "lucide-react";
 import "../styles/custom-signup.css";
 import { toast } from "sonner";
@@ -34,12 +35,13 @@ const CustomSignUp = () => {
 
     setLoading(true);
 
-    // Simulate API call
-    await new Promise((resolve) => setTimeout(resolve, 1500));
-
-    toast.success("Account created successfully!");
-    navigate("/signin");
-    setLoading(false);
+    try {
+      await axios.post("http://localhost:5000/signup", formData);
+      toast.success("Account created successfully!");
+      navigate("/signin");
+    } catch (error) {
+      toast.error(error.response?.data?.message || "Signup failed");
+    }
   };
 
   return (
