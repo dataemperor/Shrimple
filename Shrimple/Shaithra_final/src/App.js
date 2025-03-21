@@ -1,9 +1,9 @@
 import React from 'react';
 import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
 import Predict from './pages/Predict';
-import SignUp from './pages/CustomSignUp';  // Import the SignUp page
+import SignUp from './pages/CustomSignUp';  
 import Navbar from './components/Navbar';
-import Footer from './components/Footer';  // Import the Footer component
+import Footer from './components/Footer';  
 import Signin from './pages/SignIn' 
 
 function App() {
@@ -13,10 +13,10 @@ function App() {
         <Navbar />
         <Routes>
           <Route path="/predict" element={<Predict />} />
-          <Route path="/signup" element={<SignUp />} />  {/* Add SignUp Route */}
+          <Route path="/signup" element={<SignUp />} /> 
           <Route path="/signin" element={<Signin />} />
         </Routes>
-        <Footer />  {/* Add Footer here */}
+        <Footer />  
       </div>
     </Router>
   );

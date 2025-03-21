@@ -3,6 +3,7 @@ import { Link, useNavigate } from "react-router-dom";
 import { Mail, Lock, Loader2, ArrowRight } from "lucide-react";
 import "../styles/custom-signup.css";
 import { toast } from "sonner";
+import axios from "axios";
 
 const SignIn = () => {
   const [formData, setFormData] = useState({
@@ -26,12 +27,14 @@ const SignIn = () => {
 
     setLoading(true);
 
-    // Simulate API call
-    await new Promise((resolve) => setTimeout(resolve, 1500));
-
-    toast.success("Signed in successfully!");
-    navigate("/dashboard");
-    setLoading(false);
+    try {
+      const { data } = await axios.post("http://localhost:5000/signin", formData);
+      localStorage.setItem("user", JSON.stringify(data));
+      toast.success("Login successful!");
+      navigate("/predict");
+    } catch (error) {
+      toast.error(error.response?.data?.message || "Login failed");
+    }
   };
 
 

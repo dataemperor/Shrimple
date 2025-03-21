@@ -2,29 +2,41 @@ require("dotenv").config();
 const express = require("express");
 const mongoose = require("mongoose");
 const cors = require("cors");
-const axios = require("axios"); // Use axios for HTTP requests
+const axios = require("axios");
 
 const app = express();
-app.use(cors());
+app.use(cors({
+    origin: "http://localhost:3000", // Allow specific frontend origin
+    methods: ["GET", "POST"],
+    allowedHeaders: ["Content-Type", "Authorization"]
+}));
 app.use(express.json());
 
 // MongoDB Connection
-mongoose.connect(process.env.MONGO_URI, {
-    useNewUrlParser: true,
-    useUnifiedTopology: true,
-})
-    .then(() => console.log("✅ MongoDB Connected"))
-    .catch((err) => console.log("❌ MongoDB Connection Error:", err));
+mongoose.connect(process.env.MONGO_URI)
 
-// Define Schema & Model
+    .then(() => console.log("MongoDB Connected"))
+    .catch((err) => console.error("MongoDB Connection Error:", err));
+
+// User Schema & Model
+const userSchema = new mongoose.Schema({
+    name: String,
+    email: { type: String, unique: true },
+    password: String, // Store securely hashed passwords in production
+});
+
+const User = mongoose.model("User", userSchema);
+
+// Prediction Schema & Model
 const predictionSchema = new mongoose.Schema({
+    userId: mongoose.Schema.Types.ObjectId, // Link to user
     doc: Number,
     ph: Number,
     salinity: Number,
     transparency: Number,
     alkalinity: Number,
-    prediction: String, // Store the prediction result as a string
-    location: { // Add location to the schema
+    prediction: String,
+    location: {
         latitude: Number,
         longitude: Number,
     },
@@ -38,32 +50,74 @@ app.get("/", (req, res) => {
     res.send("Welcome to the Shrimp Prediction API!");
 });
 
-// API Route to Save Data and Make Prediction
+// **User Signup**
+app.post("/signup", async (req, res) => {
+    console.log("Request received at /signup");
+    try {
+        const { name, email, password } = req.body;
+
+        // Check if user exists
+        const existingUser = await User.findOne({ email });
+        if (existingUser) return res.status(400).json({ message: "User already exists" });
+
+        const newUser = new User({ name, email, password });
+        await newUser.save();
+
+        res.status(201).json({ message: "User registered successfully" });
+    } catch (error) {
+        console.error("Signup error:", error);
+        res.status(500).json({ message: "Server error" });
+    }
+});
+
+// **User Signin**
+app.post("/signin", async (req, res) => {
+    try {
+        const { email, password } = req.body;
+        const user = await User.findOne({ email });
+
+        if (!user || user.password !== password) {
+            return res.status(400).json({ message: "Invalid credentials" });
+        }
+
+        res.json({ message: "Login successful", userId: user._id, name: user.name });
+    } catch (error) {
+        console.error("Signin error:", error);
+        res.status(500).json({ message: "Server error" });
+    }
+});
+
+// **Prediction Route**
 app.post("/predict", async (req, res) => {
     try {
-        const { doc, ph, salinity, transparency, alkalinity, location } = req.body;
+        const { userId, doc, ph, salinity, transparency, alkalinity, location } = req.body;
 
         // Validate inputs
-        if (!doc || !ph || !salinity || !transparency || !alkalinity) {
+        if (!userId || !doc || !ph || !salinity || !transparency || !alkalinity) {
             return res.status(400).json({ error: "All fields are required" });
         }
 
+        // Check if user exists
+        const user = await User.findById(userId);
+        if (!user) return res.status(400).json({ error: "User not found" });
+
         // Call the Flask service for prediction
         const response = await axios.post('http://127.0.0.1:5001/predict', {
-            doc, ph, salinity, transparency, alkalinity, location, // Pass location to Flask
+            doc, ph, salinity, transparency, alkalinity, location,
         });
 
         const { prediction, confidence, graph_data } = response.data;
 
         // Save the prediction and inputs to MongoDB
         const newPrediction = new Prediction({
+            userId,
             doc,
             ph,
             salinity,
             transparency,
             alkalinity,
-            prediction, // Store the predicted result as a string
-            location, // Save location
+            prediction,
+            location,
         });
 
         await newPrediction.save();
