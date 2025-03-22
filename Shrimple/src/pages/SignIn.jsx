@@ -3,6 +3,7 @@ import { Link, useNavigate } from "react-router-dom";
 import { Mail, Lock, Loader2, ArrowRight } from "lucide-react";
 import "../styles/custom-signup.css";
 import { toast } from "sonner";
+import shrimpleLogo from "../assets/shrimple-logo.png";
 
 const SignIn = () => {
   const [formData, setFormData] = useState({
@@ -42,7 +43,7 @@ const SignIn = () => {
         <div className="custom-signup-header">
           <Link to="/" className="navbar-logo-su">
             <img
-              src={require("../assests/shrimple-logo.png")}
+              src={shrimpleLogo}
               alt="Shrimple Logo"
               className="logo-image-su"
             />

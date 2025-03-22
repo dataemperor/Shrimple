@@ -28,12 +28,16 @@ function Navbar() {
               <li className="nav-item-contact">
                 <Link className="nav-link active" aria-current="page" to="/Contact">Contact</Link>
               </li>
+              
             </ul>
-            <div className="nav-item-contact">
-              <Link className="btn btn-primary" to="/CustomSignUp">
-                Sign Up
-              </Link>
-            </div>
+            <ul className="navbar-nav ms-auto mb-2 mb-lg-0">
+              <li className="nav-item-signup">
+                <Link className="nav-link active" aria-current="page" to="/CustomSignUp">Sign Up</Link>
+              </li>
+              <li className="nav-item-signin">
+                <Link className="nav-link active" aria-current="page" to="/SignIn"> Sign In</Link>
+              </li>
+            </ul>
           </div>
         </div>
       </nav>

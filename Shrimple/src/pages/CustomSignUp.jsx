@@ -3,6 +3,7 @@ import { Link, useNavigate } from "react-router-dom";
 import { Mail, Lock, User, Loader2, ArrowRight } from "lucide-react";
 import "../styles/custom-signup.css";
 import { toast } from "sonner";
+import shrimpleLogo from "../assets/shrimple-logo.png"
 
 
 const CustomSignUp = () => {
@@ -50,7 +51,7 @@ const CustomSignUp = () => {
       {/* Logo with your custom image */}
       <Link to="/" className="navbar-logo-su">
         <img
-          src={require("../assests/shrimple-logo.png")} // Replace with the actual path to your logo
+          src={shrimpleLogo} // Replace with the actual path to your logo
           alt="Shrimple Logo"
           className="logo-image-su"
         />
