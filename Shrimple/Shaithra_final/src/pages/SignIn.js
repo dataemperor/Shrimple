@@ -12,6 +12,8 @@ const SignIn = () => {
   });
   const [loading, setLoading] = useState(false);
   const navigate = useNavigate();
+  const [errors, setErrors] = useState({});
+  const [passwordError, setPasswordError] = useState(false);
 
   const handleChange = (e) => {
     setFormData({ ...formData, [e.target.name]: e.target.value });
@@ -20,7 +22,14 @@ const SignIn = () => {
   const handleSubmit = async (e) => {
     e.preventDefault();
 
-    if (!formData.email || !formData.password) {
+    // Form validation
+    const newErrors = {
+      email: !formData.email.trim(),
+      password: !formData.password.trim(),
+    };
+    setErrors(newErrors);
+
+    if (Object.values(newErrors).some((error) => error)) {
       toast.error("Please fill in all fields");
       return;
     }
@@ -33,7 +42,15 @@ const SignIn = () => {
       toast.success("Login successful!");
       navigate("/predict");
     } catch (error) {
-      toast.error(error.response?.data?.message || "Login failed");
+      if (error.response?.status === 400 && error.response?.data?.message === "Invalid credentials") {
+        // Specific handling for incorrect password or credentials
+        setPasswordError(true);
+        toast.error("Incorrect password. Please try again.");
+      } else {
+        toast.error("Something went wrong. Please try again later.");
+      }
+    } finally {
+      setLoading(false);
     }
   };
 
@@ -70,7 +87,7 @@ const SignIn = () => {
                 value={formData.email}
                 onChange={handleChange}
                 placeholder="name@example.com"
-                className="custom-input-field"
+                className={`custom-input-field ${errors.email ? "error-class" : ""}`}
               />
             </div>
           </div>
@@ -88,9 +105,10 @@ const SignIn = () => {
                 value={formData.password}
                 onChange={handleChange}
                 placeholder="Enter your password"
-                className="custom-input-field"
+                className={`custom-input-field ${passwordError  ? "error-class" : ""}`}
               />
             </div>
+            {passwordError && <p className="error-message">Incorrect password. Please try again.</p>}
           </div>
 
           <button

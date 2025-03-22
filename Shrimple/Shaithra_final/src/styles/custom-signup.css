@@ -243,5 +243,9 @@
   .custom-signup-form,
   .custom-signup-footer {
     padding: 1.5rem;
-  }
+  }  
+}
+
+.custom-input-field.error-class {
+  border: 2px solid red;
 }
