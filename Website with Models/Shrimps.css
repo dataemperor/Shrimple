@@ -57,6 +57,7 @@ header nav a{
 .carousel .list .item .detail{
     opacity: 0;
     pointer-events: none;
+    margin-right: 1px;
 }
 .carousel .list .item .intro{
     position: absolute;
@@ -143,10 +144,9 @@ header nav a{
 }
 .arrows #back{
     font-family: Poppins;
-    font-weight: 500;
+    font-weight: 700;
     border: none;
-    border-bottom: 1px solid #555;
-    letter-spacing: 3px;
+    letter-spacing: 1px;
     background-color: transparent;
     opacity: 0;
     pointer-events: none;
@@ -156,20 +156,35 @@ header nav a{
     line-height: 0.8em;
 }
 .carousel .list .item .intro .topic{
-    font-size: 4em;
+    font-size: 3.5em;
     font-weight: 500;
 }
 .carousel .list .item .intro .des{
-    font-size: small;
+    font-size: 1em;
+    text-align: justify;
+
 }
 .carousel .list .item .intro .seeMore{
     background-color: transparent;
     border: none;
-    border-bottom: 1px solid #555;
     font-family: Poppins;
-    font-weight: bold;
+    font-weight: 700;
     margin-top: 1.2em;
     padding: 5px 0;
+}
+.carousel .list .item .detail .title{
+    font-size: 2em !important;
+    line-height: 0.8em;
+    margin-top: 110px;
+    margin-left:60% ;
+}
+.carousel .list .item .detail .topic{
+    font-size: 3em;
+    font-weight: 500;
+}
+.carousel .list .item .detail .des{
+    font-size: 0.9em;
+    text-align: justify;
 }
 .carousel .list .item:nth-child(2) .intro .title,
 .carousel .list .item:nth-child(2) .intro .topic,
@@ -349,11 +364,11 @@ header nav a{
     height: 300px;
     content: '';
     background-image: linear-gradient(
-        45deg, #016A70, #9B1C31
+        45deg, #004A50, #80CED7
     );
     position: absolute;
     z-index: -1;
-    filter: blur(150px);
+    filter: blur(110px);
     border-radius: 20% 30% 80% 10%;
     top: 50%;
     left: 50%;
