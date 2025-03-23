@@ -220,6 +220,21 @@
   }
 }
 
+.custom-input-field.error-class {
+  border: 2px solid red;
+}
+
+.error-class {
+  border: 2px solid red;
+}
+
+.error-message {
+  color: red;
+  font-size: 12px;
+  margin-top: 5px;
+}
+
+
 /* Responsive adjustments */
 @media (max-width: 576px) {
   .custom-signup-card {

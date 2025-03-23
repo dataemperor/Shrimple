@@ -1,54 +1,41 @@
-// Define the API key
-const API_KEY = 'AIzaSyDmNxdBzUcTd-tR4_3_by48nr8QynaXlXM';
-// Define the API URL
-const API_URL = 'https://generativelanguage.googleapis.com/v1beta/models/gemini-2.0-flash:generateContent'
-
 const chatMessages = document.getElementById('chat-messages');
 const userInput = document.getElementById('user-input');
 const sendButton = document.getElementById('send-button');
 
-// Function to take user inputs and generate the responses from the API
-async function generateResponse(prompt){
-    const response = await fetch(`${API_URL}?key=${API_KEY}`, {
-        method: 'POST',
+const RASA_SERVER_URL = "http://localhost:5005/webhooks/rest/webhook";
 
-        headers: {
-            'Content-Type': 'application/json',
-        },
+// Function to clean markdown syntax from the bot's response
+function cleanMarkdown(text) {
+  return text
+    .replace(/\*\*(.*?)\*\*/g, '$1') // Remove bold (**text**)
+    .replace(/\*(.*?)\*/g, '$1')     // Remove italic (*text*)
+    .replace(/`(.*?)`/g, '$1')       // Remove code (`text`)
+    .replace(/\[(.*?)\]\((.*?)\)/g, '$1'); // Remove links ([text](url))
+}
 
-        body: JSON.stringify({
-            contents: [
-                {
-                    parts: [
-                        {
-                            text: prompt
-                        }
-                    ]
-                }
-            ]
-        })
-    });
+// Function to send user inputs to RASA and receive bot response
+async function sendMessageToRasa(message) {
+    try {
+        const response = await fetch(RASA_SERVER_URL, {
+            method: "POST",
+            headers: {"Content-Type": "application/json"},
+            body: JSON.stringify({message: message, sender: "user"})
+        });
 
-    if (!response.ok){
-        throw new Error('Failed to generate response'); // Display an error mesaage if there is an error
+        if (!response.ok){
+            throw new Error("Failed to fetch response from Rasa");
+        }
+
+        const data = await response.json();
+        console.log("Rasa Response:", data); 
+        return data.length ? data[0].text : "Sorry, I didn't understand that.";
+    } catch (error) {
+        console.error("Error:", error);
+        return "An error occurred. Please try again.";
     }
-
-    const data = await response.json(); // Converts the API response to JSON format
-
-    console.log(data);
-
-
-    return data.candidates[0].content.parts[0].text; // Returns the first generated response form the API
 }
 
-function cleanMarkdown(text){
-    return text
-        .replace(/#{1,6}\s?/g, '') // Remove any Markdown headers  
-        .replace(/\*\*/g, '') // Remove bold formatting
-        .replace(/\n{3,}/g, '\n\n') // Limits excessive newlines to a maximum of two
-        .trim(); // Remove any whitespace from the start and end of the string
-}
-
+// Function to add message to the chat 
 function addMessage(message, isUser){
     const messageElement = document.createElement('div'); 
     messageElement.classList.add('message');
@@ -62,12 +49,14 @@ function addMessage(message, isUser){
     const messageContent = document.createElement('div');
     messageContent.classList.add('message-content');
     messageContent.textContent = message;
+
     messageElement.appendChild(profileImage);
     messageElement.appendChild(messageContent);
     chatMessages.appendChild(messageElement);
     chatMessages.scrollTop = chatMessages.scrollHeight;
 }
 
+// Function to handle user input
 async function handleUserInput() {
     const userMessage = userInput.value.trim();
 
@@ -75,13 +64,13 @@ async function handleUserInput() {
         addMessage(userMessage, true);
         userInput.value = ''; // Clear the input field
 
-        // Disable the send button an the input field to prevent multiple messages sent while the bot responds
+        // Disable the send button and the input field to prevent multiple messages sent while the bot responds
         sendButton.disabled = true;
         userInput.disabled = true;
 
         try {
-             const botMessage = await generateResponse(userMessage);
-             addMessage(cleanMarkdown(botMessage), false);
+             const botMessage = await sendMessageToRasa(userMessage);
+             addMessage(cleanMarkdown(botMessage), false); // Clean markdown syntax from the bot's response
         } catch (error){
             console.error('Error:', error);
             addMessage('Sorry. I encountered an error. Please try again.', false); // Display an error message when an error occurs
