@@ -1,9 +1,6 @@
 import React, { useState, useEffect, useRef } from "react";
 import { Chart, CategoryScale, LinearScale, BarController, BarElement } from "chart.js";
-import { 
-  Droplet, FlaskConical, Waves, Eye, AlignLeft, Sparkles, MapPin,
-  CompassIcon, ArrowRightIcon, CheckCircleIcon, Loader2Icon, LocateIcon
-} from "lucide-react";
+import { Droplet, FlaskConical, Waves, Eye, AlignLeft, Sparkles, MapPin,CompassIcon, ArrowRightIcon, CheckCircleIcon, Loader2Icon, LocateIcon} from "lucide-react";
 import "../styles/predict.css";
 import { toast } from "sonner";
 
