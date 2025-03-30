@@ -22,8 +22,8 @@ function Navbar() {
               <li className="nav-item-predict">
                 <Link className="nav-link active" aria-current="page" to="/Predict">Predict Ground</Link>
               </li>
-              <li className="nav-item-insights">
-                <Link className="nav-link active" aria-current="page" to="/insights">Data Insights</Link>
+              <li className="nav-item-map">
+                <Link className="nav-link active" aria-current="page" to="/Map">Map</Link>
               </li>
               <li className="nav-item-contact">
                 <Link className="nav-link active" aria-current="page" to="/Contact">Contact</Link>

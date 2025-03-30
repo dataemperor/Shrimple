@@ -38,7 +38,7 @@ const SignIn = () => {
     setLoading(true);
 
     try {
-      const { data } = await axios.post("http://localhost:5000/signin", formData);
+      const { data } = await axios.post("http://localhost:5001/signin", formData);
       localStorage.setItem("user", JSON.stringify(data));
       toast.success("Login successful!");
       navigate("/predict");

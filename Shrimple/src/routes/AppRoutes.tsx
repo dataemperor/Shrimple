@@ -5,6 +5,7 @@ import Home from "../pages/Home";
 import Predict from "../pages/Predict";
 import SignIn from "../pages/SignIn";
 import CustomSignUp from "../pages/CustomSignUp";
+import Map from "../pages/Map";
 
 const AppRoutes = () => {
     return (
@@ -15,6 +16,7 @@ const AppRoutes = () => {
             <Route path="/predict" element={<Predict />} />
             <Route path="/SignIn" element={<SignIn />} />
             <Route path="/CustomSignUp" element={<CustomSignUp />} />
+            <Route path="/Map" element={<Map />}/>
             <Route path="*" element={<Navigate to="/"/>} />
         </Routes>
     );

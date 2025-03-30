@@ -47,7 +47,7 @@ const CustomSignUp = () => {
     setLoading(true);
 
     try {
-      await axios.post("http://localhost:5000/signup", formData);
+      await axios.post("http://localhost:5001/signup", formData);
       toast.success("Account created successfully!");
       navigate("/signin");
     } catch (error) {
@@ -69,7 +69,7 @@ const CustomSignUp = () => {
         <div className="custom-signup-header">
           <Link to="/" className="navbar-logo-su">
             <img
-              src={require("../assests/shrimple-logo.png")}
+              src={shrimpleLogo}
               alt="Shrimple Logo"
               className="logo-image-su"
             />
