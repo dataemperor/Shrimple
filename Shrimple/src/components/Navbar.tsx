@@ -19,6 +19,9 @@ function Navbar() {
               <li className="nav-item-about">
                 <Link className="nav-link active" aria-current="page" to="/About">About</Link>
               </li>
+              <li>
+                <Link className="nav-link active" aria-current="page" to="/Chatbot">Chatbot</Link>
+              </li>
               <li className="nav-item-predict">
                 <Link className="nav-link active" aria-current="page" to="/Predict">Predict Ground</Link>
               </li>
