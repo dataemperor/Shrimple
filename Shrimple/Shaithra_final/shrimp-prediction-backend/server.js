@@ -22,14 +22,13 @@ mongoose.connect(process.env.MONGO_URI)
 const userSchema = new mongoose.Schema({
     name: String,
     email: { type: String, unique: true },
-    password: String, // Store securely hashed passwords in production
+    password: String, 
 });
 
 const User = mongoose.model("User", userSchema);
 
 // Prediction Schema & Model
 const predictionSchema = new mongoose.Schema({
-    userId: mongoose.Schema.Types.ObjectId, // Link to user
     doc: Number,
     ph: Number,
     salinity: Number,
@@ -90,16 +89,12 @@ app.post("/signin", async (req, res) => {
 // **Prediction Route**
 app.post("/predict", async (req, res) => {
     try {
-        const { userId, doc, ph, salinity, transparency, alkalinity, location } = req.body;
+        const {  doc, ph, salinity, transparency, alkalinity, location } = req.body;
 
         // Validate inputs
-        if (!userId || !doc || !ph || !salinity || !transparency || !alkalinity) {
+        if (!doc || !ph || !salinity || !transparency || !alkalinity) {
             return res.status(400).json({ error: "All fields are required" });
         }
-
-        // Check if user exists
-        const user = await User.findById(userId);
-        if (!user) return res.status(400).json({ error: "User not found" });
 
         // Call the Flask service for prediction
         const response = await axios.post('http://127.0.0.1:5001/predict', {
@@ -110,7 +105,6 @@ app.post("/predict", async (req, res) => {
 
         // Save the prediction and inputs to MongoDB
         const newPrediction = new Prediction({
-            userId,
             doc,
             ph,
             salinity,
