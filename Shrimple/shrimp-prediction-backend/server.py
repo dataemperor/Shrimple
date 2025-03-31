@@ -15,8 +15,9 @@ CORS(app)
 def home():
     return jsonify({"message": "Welcome to the Shrimp Prediction API!"})
 
-# Load the trained model
+# Load the trained model for prediction and anomaly detection
 model = joblib.load('random_forest_model.pkl')
+anomaly_detection_model = joblib.load('anomaly_detection.pkl')
 
 # Connect to MongoDB
 client = MongoClient("mongodb+srv://shrimple:123shrimple@shrimple.ar5le.mongodb.net/?retryWrites=true&w=majority")
@@ -46,6 +47,17 @@ def predict():
         salinity = float(data['salinity'])
         transparency = float(data['transparency'])
         alkalinity = float(data['alkalinity'])
+        
+        # Anomaly Detection 
+        features_anomaly = np.array([[doc, ph, salinity, transparency, alkalinity]])
+        is_anomaly = anomaly_detection_model.predict(features_anomaly)[0]
+        anomaly_detection_score = anomaly_detection_model.decision_function(features_anomaly)[0]
+
+        if is_anomaly == 1:
+            return jsonify({
+                'anomaly_detected': True,
+                'anomaly_detection_score': anomaly_detection_score
+            }), 200
 
         if doc<3:
             return jsonify({'prediction':'Unbreedable Shrimp Zone','reason':'DOC is below the acceptable threshold'}), 200
@@ -98,7 +110,9 @@ def predict():
             'graph_data': {
                 'labels': ['DOC', 'pH', 'Salinity', 'Transparency', 'Alkalinity'],
                 'values': feature_importance
-            }
+            },
+            'anomaly_detected': bool(is_anomaly),
+            'anomaly_detection_score': anomaly_detection_score
         }), 200
 
     except Exception as e:

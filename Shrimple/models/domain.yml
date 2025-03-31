@@ -1,0 +1,145 @@
+version: "3.1"
+
+intents:
+  - greet
+  - goodbye
+  - affirm
+  - deny
+  - mood_great
+  - mood_unhappy
+  - bot_challenge
+  - water_quality
+  - shrimp_growth
+  - shrimp_breeding
+  - shrimp_feeding
+  - shrimp_diseases
+  - pond_management
+  - market_price
+  - shrimp_species
+  - weather_impact
+  - shrimp_harvest
+  - out_of_scope
+  - shrimp_farming_basics
+  - shrimp_farming_equipment
+  - shrimp_farming_costs
+  - shrimp_farming_challenges
+  - shrimp_farming_sustainability
+  - shrimp_farming_regulations
+  - shrimp_farming_technology
+  - shrimp_farming_feed_management
+  - shrimp_farming_water_management
+  - shrimp_farming_harvesting_techniques
+  - shrimp_farming_export_trade
+  - shrimp_farming_health_safety
+  - shrimp_farming_business_planning
+  - shrimp_farming_research_development
+  - shrimp_farming_countries
+  - shrimp_farming_sri_lanka
+
+responses:
+  utter_greet:
+    - text: "Hey! How are you?"
+
+  utter_cheer_up:
+    - text: "Here is something to cheer you up:"
+      image: "https://i.imgur.com/nGF1K8f.jpg"
+
+  utter_did_that_help:
+    - text: "Did that help you?"
+
+  utter_happy:
+    - text: "Great, carry on!"
+
+  utter_goodbye:
+    - text: "Bye"
+
+  utter_iamabot:
+    - text: "I am a bot, powered by Rasa."
+
+  utter_water_quality:
+    - text: "Ideal shrimp water conditions: pH 7.5-8.5, salinity 10-25 ppt, temperature 26-30°C, and dissolved oxygen above 5 mg/L."
+
+  utter_shrimp_growth:
+    - text: "Shrimp growth depends on species, water quality, and feeding. On average, it takes 3-6 months for shrimp to reach market size."
+
+  utter_shrimp_breeding:
+    - text: "Shrimp breed in warm, saline water with good oxygen levels. Proper pond conditions and broodstock management can improve breeding rates."
+
+  utter_shrimp_feeding:
+    - text: "Shrimp should be fed a balanced diet rich in protein. Feed 3-5 times a day, adjusting based on shrimp size and pond conditions."
+
+  utter_shrimp_diseases:
+    - text: "Common shrimp diseases include White Spot Syndrome, EMS, and Black Gill Disease. Proper pond hygiene and water management help prevent outbreaks."
+
+  utter_pond_management:
+    - text: "To maintain a healthy shrimp pond, ensure regular cleaning, proper aeration, and monitor water parameters like pH and oxygen levels."
+
+  utter_market_price:
+    - text: "Shrimp prices depend on species, demand, and location. Checking local market trends and export rates can help you get the best price."
+
+  utter_shrimp_species:
+    - text: "Popular farmed shrimp species include Pacific White Shrimp (Litopenaeus vannamei) and Black Tiger Shrimp (Penaeus monodon)."
+
+  utter_weather_impact:
+    - text: "Shrimp farming is affected by extreme temperatures and heavy rains. Use aeration during heat waves and maintain pond salinity during floods."
+
+  utter_shrimp_harvest:
+    - text: "Harvest shrimp when they reach market size, usually after 90-120 days. Use net harvesting techniques and store shrimp in ice to maintain quality."
+
+  utter_out_of_scope:
+    - text: "I'm sorry, I can only help with questions about shrimp farming. Please ask me something related to that!"
+
+  utter_default:
+    - text: "I'm not sure I understand. Can you rephrase that?"
+
+  utter_shrimp_farming_basics:
+    - text: "Shrimp farming involves raising shrimp in controlled environments like ponds or tanks. It requires proper water quality, feeding, and disease management."
+
+  utter_shrimp_farming_equipment:
+    - text: "Essential equipment for shrimp farming includes aerators, water pumps, feeders, and monitoring systems to maintain water quality."
+
+  utter_shrimp_farming_costs:
+    - text: "The cost of starting shrimp farming depends on the scale and location. Initial investments include pond construction, equipment, and shrimp seeds."
+
+  utter_shrimp_farming_challenges:
+    - text: "Common challenges in shrimp farming include disease outbreaks, water quality management, and market price fluctuations."
+
+  utter_shrimp_farming_sustainability:
+    - text: "Sustainable shrimp farming practices include reducing water usage, minimizing chemical inputs, and using eco-friendly feeds."
+
+  utter_shrimp_farming_regulations:
+    - text: "Shrimp farming regulations vary by country and region. They often include environmental permits, water quality standards, and disease control measures."
+
+  utter_shrimp_farming_technology:
+    - text: "Technology in shrimp farming includes automated feeding systems, water quality sensors, and remote monitoring tools."
+
+  utter_shrimp_farming_feed_management:
+    - text: "Proper feed management involves providing balanced nutrition, avoiding overfeeding, and using high-quality feeds."
+
+  utter_shrimp_farming_water_management:
+    - text: "Water management in shrimp farming includes maintaining proper salinity, temperature, and oxygen levels, as well as preventing pollution."
+
+  utter_shrimp_farming_harvesting_techniques:
+    - text: "Best harvesting techniques include using nets, minimizing stress on shrimp, and storing harvested shrimp in ice to maintain quality."
+
+  utter_shrimp_farming_export_trade:
+    - text: "To export shrimp, you need to comply with international trade regulations, obtain certifications, and find reliable buyers."
+
+  utter_shrimp_farming_health_safety:
+    - text: "Health and safety in shrimp farming involve protecting workers from hazards, maintaining hygiene, and preventing disease outbreaks."
+
+  utter_shrimp_farming_business_planning:
+    - text: "A shrimp farming business plan should include market analysis, financial projections, and operational strategies."
+
+  utter_shrimp_farming_research_development:
+    - text: "Research and development in shrimp farming focus on improving breeding techniques, disease resistance, and sustainability."
+
+  utter_shrimp_farming_countries:
+    - text: "The top countries for shrimp farming are India, Vietnam, Indonesia, Thailand, and Ecuador."
+
+  utter_shrimp_farming_sri_lanka:
+    - text: "Shrimp farming in Sri Lanka is primarily practiced in the Northwestern and Eastern provinces. Popular species include the Pacific White Shrimp and Black Tiger Shrimp."
+
+session_config:
+  session_expiration_time: 60
+  carry_over_slots_to_new_session: true

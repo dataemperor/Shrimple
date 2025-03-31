@@ -27,6 +27,8 @@ function Predict() {
   const chartRef = useRef(null);
   const suggestionsRef = useRef(null);
   const searchInputRef = useRef(null);
+  const [anomalyDetected, setAnomalyDetected] = useState(false);
+  const [anomalyScore, setAnomalyScore] = useState(null);
 
   // Close suggestions dropdown when clicking outside
   useEffect(() => {
