@@ -1,23 +1,34 @@
 import React, { useState } from "react";
-import './components/ShrimpDemand.css'; // Fixed path
+import "./components/ShrimpDemand.css"; // Ensure this file exists
 
 const ShrimpDemandPrediction = () => {
   const [quartileInputs, setQuartileInputs] = useState({ Q1: "", Q2: "", Q3: "" });
   const [prediction, setPrediction] = useState(null);
+  const [explanation, setExplanation] = useState("");
 
   const handleChange = (e) => {
     setQuartileInputs({ ...quartileInputs, [e.target.name]: e.target.value });
   };
 
   const handlePredict = () => {
-    // Simplified for demo - in a real app, this would call your API
-    const mockPrediction = Math.round((
-      Number(quartileInputs.Q1) + 
-      Number(quartileInputs.Q2) + 
-      Number(quartileInputs.Q3)
-    ) / 3 * 1.2);
-    
-    setPrediction(mockPrediction);
+    const Q1 = Number(quartileInputs.Q1);
+    const Q2 = Number(quartileInputs.Q2);
+    const Q3 = Number(quartileInputs.Q3);
+
+    if (isNaN(Q1) || isNaN(Q2) || isNaN(Q3)) {
+      setPrediction(null);
+      setExplanation("Please enter valid numbers for all quartile demands.");
+      return;
+    }
+
+    const avgDemand = (Q1 + Q2 + Q3) / 3;
+    const predictedDemand = Math.round(avgDemand * 1.2);
+
+    setPrediction(predictedDemand);
+    setExplanation(
+      `The predicted demand is based on the average of the provided quartile values, ` +
+      `adjusted with a growth factor of 1.2.`
+    );
   };
 
   return (
@@ -45,6 +56,7 @@ const ShrimpDemandPrediction = () => {
           <h2 className="card-title">Quartile Demands</h2>
           
           <div className="input-group">
+            <label className="input-label">Q1 Demand (Low season demand)</label>
             <input
               name="Q1"
               placeholder="Enter Q1 Demand"
@@ -52,7 +64,8 @@ const ShrimpDemandPrediction = () => {
               onChange={handleChange}
               className="input-field"
             />
-            
+
+            <label className="input-label">Q2 Demand (Moderate season demand)</label>
             <input
               name="Q2"
               placeholder="Enter Q2 Demand"
@@ -60,7 +73,8 @@ const ShrimpDemandPrediction = () => {
               onChange={handleChange}
               className="input-field"
             />
-            
+
+            <label className="input-label">Q3 Demand (High season demand)</label>
             <input
               name="Q3"
               placeholder="Enter Q3 Demand"
@@ -78,8 +92,11 @@ const ShrimpDemandPrediction = () => {
         {/* Right Panel: Prediction */}
         <div className="card result-card">
           <p className="result-text">
-            Fill in the quartile demands and click "Predict" to see results.
+            {prediction !== null 
+              ? `Predicted Demand: ${prediction}`
+              : "Fill in the quartile demands and click 'Predict' to see results."}
           </p>
+          <p className="explanation-text">{explanation}</p>
         </div>
       </div>
     </div>

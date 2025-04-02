@@ -1,6 +1,3 @@
-/* ShrimpDemand.css */
-
-/* Base styles */
 * {
   margin: 0;
   padding: 0;
@@ -13,13 +10,11 @@ body {
   color: #333;
 }
 
-/* Container */
 .shrimple-container {
   min-height: 100vh;
-  background-color: #1c4a42; /* Dark teal background */
+  background-color: #1c4a42;
 }
 
-/* Navbar */
 .navbar {
   display: flex;
   justify-content: space-between;
@@ -42,9 +37,6 @@ body {
 }
 
 .nav-link {
-  display: flex;
-  align-items: center;
-  gap: 6px;
   color: white;
   text-decoration: none;
   padding: 8px 16px;
@@ -58,28 +50,23 @@ body {
 }
 
 .nav-link.active {
-  background-color: #f97316; /* Orange for active link */
-  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
+  background-color: #f97316;
 }
 
-/* Content */
 .content-container {
   display: flex;
   max-width: 1200px;
   margin: 0 auto;
   padding: 32px 16px;
   gap: 32px;
-  height: calc(100vh - 80px);
 }
 
-/* Cards */
 .card {
   background-color: white;
   padding: 32px;
   border-radius: 12px;
   box-shadow: 0 6px 12px rgba(0, 0, 0, 0.15);
   width: 100%;
-  overflow-y: auto;
 }
 
 .card-title {
@@ -91,7 +78,6 @@ body {
   padding-bottom: 8px;
 }
 
-/* Instructions */
 .instructions {
   background-color: #f8f9fa;
   padding: 16px;
@@ -108,18 +94,12 @@ body {
 
 .instructions p {
   margin-bottom: 12px;
-  line-height: 1.5;
 }
 
 .instructions ul {
   padding-left: 24px;
 }
 
-.instructions li {
-  margin-bottom: 8px;
-}
-
-/* Input fields */
 .input-group {
   display: flex;
   flex-direction: column;
@@ -144,16 +124,8 @@ body {
   border-radius: 8px;
   width: 100%;
   font-size: 16px;
-  transition: border-color 0.2s;
 }
 
-.input-field:focus {
-  border-color: #f97316;
-  outline: none;
-  box-shadow: 0 0 0 2px rgba(249, 115, 22, 0.2);
-}
-
-/* Button */
 .predict-button {
   background-color: #f97316;
   color: white;
@@ -164,23 +136,10 @@ body {
   font-size: 16px;
   font-weight: 600;
   cursor: pointer;
-  transition: background-color 0.2s;
-  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
 }
 
 .predict-button:hover {
   background-color: #ea580c;
-}
-
-.predict-button:disabled {
-  background-color: #ccc;
-  cursor: not-allowed;
-}
-
-/* Result card */
-.result-card {
-  display: flex;
-  flex-direction: column;
 }
 
 .result-text {
@@ -188,114 +147,4 @@ body {
   font-size: 16px;
   text-align: center;
   margin-top: 80px;
-}
-
-/* Prediction Results */
-.prediction-result {
-  display: flex;
-  flex-direction: column;
-  gap: 24px;
-}
-
-.prediction-value {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  gap: 16px;
-  padding: 24px;
-  background-color: #f0f9ff;
-  border-radius: 8px;
-  text-align: center;
-}
-
-.prediction-label {
-  font-size: 18px;
-  font-weight: 500;
-  color: #075985;
-}
-
-.prediction-number {
-  font-size: 48px;
-  font-weight: 700;
-  color: #f97316;
-}
-
-.prediction-info, .accuracy-metrics {
-  background-color: #f8f9fa;
-  padding: 16px;
-  border-radius: 8px;
-}
-
-.prediction-info h3, .accuracy-metrics h3 {
-  font-size: 18px;
-  margin-bottom: 12px;
-  color: #1c4a42;
-}
-
-.prediction-info p {
-  margin-bottom: 12px;
-  line-height: 1.5;
-}
-
-.prediction-info ul {
-  padding-left: 24px;
-  margin-top: 8px;
-}
-
-.prediction-info li {
-  margin-bottom: 6px;
-}
-
-/* Accuracy metrics */
-.metric {
-  display: flex;
-  justify-content: space-between;
-  padding: 8px 0;
-  border-bottom: 1px solid #eee;
-}
-
-.metric:last-child {
-  border-bottom: none;
-}
-
-.metric span:first-child {
-  font-weight: 500;
-}
-
-/* Media query for mobile devices */
-@media (max-width: 768px) {
-  .content-container {
-    flex-direction: column;
-    height: auto;
-  }
-  
-  .navbar {
-    padding: 12px 16px;
-  }
-  
-  .brand {
-    font-size: 22px;
-  }
-  
-  .nav-links {
-    gap: 8px;
-  }
-  
-  .nav-link {
-    padding: 6px 10px;
-    font-size: 14px;
-  }
-  
-  .card {
-    padding: 20px;
-  }
-  
-  .card-title {
-    font-size: 20px;
-    margin-bottom: 16px;
-  }
-  
-  .prediction-number {
-    font-size: 36px;
-  }
 }
