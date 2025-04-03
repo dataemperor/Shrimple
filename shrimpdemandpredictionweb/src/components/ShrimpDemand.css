@@ -148,3 +148,134 @@ body {
   text-align: center;
   margin-top: 80px;
 }
+
+/* Chart styling additions */
+.prediction-results {
+  display: flex;
+  flex-direction: column;
+  gap: 24px;
+}
+
+.prediction-value {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  background-color: #f0f9f6;
+  padding: 16px;
+  border-radius: 8px;
+  border-left: 4px solid #f97316;
+}
+
+.prediction-label {
+  font-weight: 600;
+  color: #1c4a42;
+  font-size: 18px;
+}
+
+.prediction-number {
+  font-size: 28px;
+  font-weight: 700;
+  color: #f97316;
+}
+
+.prediction-stats {
+  display: flex;
+  gap: 16px;
+  margin-bottom: 20px;
+}
+
+.stat-item {
+  flex: 1;
+  background-color: #f8f9fa;
+  padding: 16px;
+  border-radius: 8px;
+  border-left: 3px solid #f97316;
+}
+
+.stat-label {
+  display: block;
+  font-weight: 600;
+  color: #1c4a42;
+  margin-bottom: 8px;
+}
+
+.stat-value {
+  display: block;
+  font-size: 20px;
+  color: #333;
+}
+
+.charts-container {
+  display: flex;
+  flex-direction: column;
+  gap: 24px;
+}
+
+.chart-wrapper {
+  background-color: #f8f9fa;
+  padding: 16px;
+  border-radius: 8px;
+  margin-bottom: 16px;
+}
+
+.chart-title {
+  text-align: center;
+  margin-bottom: 16px;
+  color: #1c4a42;
+  font-size: 18px;
+  font-weight: 600;
+}
+
+/* Responsive design for charts */
+@media (min-width: 768px) {
+  .prediction-stats {
+    flex-direction: row;
+  }
+}
+
+@media (min-width: 1024px) {
+  .charts-container {
+    flex-direction: row;
+  }
+  
+  .chart-wrapper {
+    flex: 1;
+  }
+  
+  .content-container {
+    flex-direction: row;
+  }
+}
+
+/* Responsive fixes for smaller screens */
+@media (max-width: 767px) {
+  .content-container {
+    flex-direction: column;
+  }
+  
+  .prediction-stats {
+    flex-direction: column;
+  }
+}
+
+/* Chart specific overrides to match your theme */
+.recharts-cartesian-grid-horizontal line,
+.recharts-cartesian-grid-vertical line {
+  stroke: #e0e0e0;
+}
+
+.recharts-default-tooltip {
+  background-color: #1c4a42 !important;
+  border-color: #1c4a42 !important;
+  color: white !important;
+  border-radius: 4px;
+}
+
+.recharts-tooltip-label {
+  color: #f97316 !important;
+  font-weight: bold;
+}
+
+.recharts-line-dot {
+  fill: #f97316;
+}

@@ -1,5 +1,6 @@
-import React, { useState } from "react";
-import "./ShrimpDemand.css"; // Import the CSS file
+import React, { useState, useEffect } from "react";
+import { LineChart, Line, BarChart, Bar, XAxis, YAxis, CartesianGrid, Tooltip, Legend, ResponsiveContainer } from "recharts";
+import "./ShrimpDemand.css";
 
 const ShrimpDemandPrediction = () => {
   const [quartileInputs, setQuartileInputs] = useState({
@@ -9,38 +10,37 @@ const ShrimpDemandPrediction = () => {
   });
   const [prediction, setPrediction] = useState(null);
   const [loading, setLoading] = useState(false);
+  const [chartData, setChartData] = useState([]);
 
   const handleChange = (e) => {
     setQuartileInputs({ ...quartileInputs, [e.target.name]: e.target.value });
   };
 
-  const handlePredict = async () => {
+  useEffect(() => {
+    if (prediction !== null) {
+      updateChartData();
+    }
+  }, [prediction]);
+
+  const updateChartData = () => {
+    const newChartData = [
+      { name: "Q1", value: Number(quartileInputs.Q1) },
+      { name: "Q2", value: Number(quartileInputs.Q2) },
+      { name: "Q3", value: Number(quartileInputs.Q3) },
+      { name: "Q4 (Predicted)", value: prediction }
+    ];
+    setChartData(newChartData);
+  };
+
+  const handlePredict = () => {
     if (!quartileInputs.Q1 || !quartileInputs.Q2 || !quartileInputs.Q3) {
       alert("Please fill in all three quartile values");
       return;
     }
-  
-    setLoading(true);
-  
-    try {
-      const response = await fetch("http://127.0.0.1:5000/predict", {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify(quartileInputs),
-      });
-  
-      const data = await response.json();
-      setPrediction(data.prediction);
-    } catch (error) {
-      console.error("Error:", error);
-      alert("Failed to fetch prediction.");
-    }
-  
-    setLoading(false);
-  };
 
     setLoading(true);
-    
+
+    // Simulate API call with setTimeout
     setTimeout(() => {
       const lag1 = Number(quartileInputs.Q3);
       const lag2 = Number(quartileInputs.Q2);
@@ -51,6 +51,31 @@ const ShrimpDemandPrediction = () => {
       setPrediction(mockPrediction);
       setLoading(false);
     }, 1000);
+  };
+
+  const getQuarterlyTrend = () => {
+    if (!chartData.length) return "";
+    
+    const q3 = Number(quartileInputs.Q3);
+    
+    if (prediction > q3) {
+      return "Demand is trending upward for Q4";
+    } else if (prediction < q3) {
+      return "Demand is trending downward for Q4";
+    } else {
+      return "Demand is stable for Q4";
+    }
+  };
+
+  const getGrowthPercentage = () => {
+    if (!chartData.length) return "";
+    
+    const q3 = Number(quartileInputs.Q3);
+    if (q3 === 0) return "N/A";
+    
+    const growthPercent = ((prediction - q3) / q3 * 100).toFixed(1);
+    return `${growthPercent}%`;
+  };
 
   return (
     <div className="shrimple-container">
@@ -101,10 +126,61 @@ const ShrimpDemandPrediction = () => {
           <h2 className="card-title">Prediction Results</h2>
           
           {prediction !== null ? (
-            <div className="prediction-result">
+            <div className="prediction-results">
               <div className="prediction-value">
                 <span className="prediction-label">Q4 Predicted Demand:</span>
                 <span className="prediction-number">{prediction}</span>
+              </div>
+              
+              <div className="prediction-stats">
+                <div className="stat-item">
+                  <span className="stat-label">Growth from Q3:</span>
+                  <span className="stat-value">{getGrowthPercentage()}</span>
+                </div>
+                <div className="stat-item">
+                  <span className="stat-label">Trend:</span>
+                  <span className="stat-value">{getQuarterlyTrend()}</span>
+                </div>
+              </div>
+              
+              <div className="charts-container">
+                <div className="chart-wrapper">
+                  <h3 className="chart-title">Quarterly Demand Trend</h3>
+                  <ResponsiveContainer width="100%" height={200}>
+                    <LineChart data={chartData} margin={{ top: 5, right: 30, left: 20, bottom: 5 }}>
+                      <CartesianGrid strokeDasharray="3 3" />
+                      <XAxis dataKey="name" />
+                      <YAxis />
+                      <Tooltip />
+                      <Legend />
+                      <Line 
+                        type="monotone" 
+                        dataKey="value" 
+                        stroke="#f97316" 
+                        activeDot={{ r: 8 }} 
+                        name="Demand"
+                      />
+                    </LineChart>
+                  </ResponsiveContainer>
+                </div>
+                
+                <div className="chart-wrapper">
+                  <h3 className="chart-title">Quarterly Demand Comparison</h3>
+                  <ResponsiveContainer width="100%" height={200}>
+                    <BarChart data={chartData} margin={{ top: 5, right: 30, left: 20, bottom: 5 }}>
+                      <CartesianGrid strokeDasharray="3 3" />
+                      <XAxis dataKey="name" />
+                      <YAxis />
+                      <Tooltip />
+                      <Legend />
+                      <Bar 
+                        dataKey="value" 
+                        fill="#1c4a42" 
+                        name="Demand" 
+                      />
+                    </BarChart>
+                  </ResponsiveContainer>
+                </div>
               </div>
             </div>
           ) : (
