@@ -19,12 +19,21 @@ def home():
 model = joblib.load('random_forest_model.pkl')
 anomaly_detection_model = joblib.load('anomaly_detection.pkl')
 
-# Connect to MongoDB
-client = MongoClient("mongodb+srv://shrimple:123shrimple@shrimple.ar5le.mongodb.net/?retryWrites=true&w=majority")
+# MongoDB connection URI
+uri = "mongodb+srv://shrimple:123shrimple@shrimple.ar5le.mongodb.net/?retryWrites=true&w=majority&appName=shrimple"
+
+# Error handling for MongoDB connection
+try:
+    client = MongoClient(uri)
+    client.server_info()  # Will throw an error if connection fails
+    print("MongoDB connected successfully")
+except Exception as e:
+    print(f"Error connecting to MongoDB: {e}")
+
 db = client.shrimple
 predictions_collection = db.predictions
 
-# Route to handle prediction
+
 # Route to handle prediction
 @app.route('/predict', methods=['POST'])
 def predict():
@@ -65,10 +74,10 @@ def predict():
 
         # Define hard reject ranges (extreme values)
         hard_limits = {
-            "ph": (4, 10),
-            "salinity": (0, 50),
-            "transparency": (0, 100),
-            "alkalinity": (0, 500),
+            "ph": (6, 10),
+            "salinity": (0, 40),
+            "transparency": (6, 80),
+            "alkalinity": (70, 500),
         }
 
         # Check if any input is completely unrealistic
@@ -101,7 +110,15 @@ def predict():
             'location': location,  # Add location to the MongoDB record
             'createdAt': datetime.datetime.now()
         }
-        predictions_collection.insert_one(prediction_data)
+        # Error handling for MongoDB insert
+        try:
+            predictions_collection.insert_one(prediction_data)
+            print("Prediction saved to MongoDB")
+        except Exception as e:
+            print(f"Error saving prediction to MongoDB: {e}")
+            return jsonify({'error': 'Failed to save prediction to the database'}), 500
+
+        print("Content-Type received:", request.headers.get("Content-Type"))
 
         # Return the prediction result with feature importance
         return jsonify({
