@@ -1,14 +1,9 @@
-body{
-    font-family: Arial, sans-serif;
-    margin: 0;
-    padding: 0;
-    background-color: #1a1a1a;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    height: 100vh;
-    color: #e0e0e0;
+body {
+  display: grid;
+  place-items: center;
+  
 }
+
 .chat-container{
     width: 100%;
     max-width: 400px;
@@ -18,7 +13,7 @@ body{
     overflow: hidden;
     display: flex;
     flex-direction: column;
-    height: 90vh;
+    height: 40vh;
 }
 .chat-header{
     background-color: #3a3a3a;

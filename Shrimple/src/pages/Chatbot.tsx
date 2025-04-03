@@ -1,5 +1,6 @@
 import { useState } from "react";
-import "../styles/Chatbot.css";
+// import '../styles/Chatbot.css';
+import '../styles/Chatbot-temp.css';
 
 const RASA_SERVER_URL = "http://localhost:5005/webhooks/rest/webhook";
 
