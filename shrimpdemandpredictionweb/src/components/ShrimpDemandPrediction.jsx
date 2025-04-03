@@ -14,11 +14,30 @@ const ShrimpDemandPrediction = () => {
     setQuartileInputs({ ...quartileInputs, [e.target.name]: e.target.value });
   };
 
-  const handlePredict = () => {
+  const handlePredict = async () => {
     if (!quartileInputs.Q1 || !quartileInputs.Q2 || !quartileInputs.Q3) {
       alert("Please fill in all three quartile values");
       return;
     }
+  
+    setLoading(true);
+  
+    try {
+      const response = await fetch("http://127.0.0.1:5000/predict", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify(quartileInputs),
+      });
+  
+      const data = await response.json();
+      setPrediction(data.prediction);
+    } catch (error) {
+      console.error("Error:", error);
+      alert("Failed to fetch prediction.");
+    }
+  
+    setLoading(false);
+  };
 
     setLoading(true);
     
@@ -32,7 +51,6 @@ const ShrimpDemandPrediction = () => {
       setPrediction(mockPrediction);
       setLoading(false);
     }, 1000);
-  };
 
   return (
     <div className="shrimple-container">
