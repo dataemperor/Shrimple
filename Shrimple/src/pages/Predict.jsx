@@ -27,8 +27,6 @@ function Predict() {
   const chartRef = useRef(null);
   const suggestionsRef = useRef(null);
   const searchInputRef = useRef(null);
-  const [anomalyDetected, setAnomalyDetected] = useState(false);
-  const [anomalyScore, setAnomalyScore] = useState(null);
 
   // Close suggestions dropdown when clicking outside
   useEffect(() => {
@@ -196,6 +194,9 @@ function Predict() {
 
       setPrediction(result.prediction);
       setConfidence(result.confidence || 95);
+      if (result.anomaly_detected) {
+        alert("Warning! The input data is anomalous!");
+      }
       setGraphData({
         labels: result.graph_data?.labels || ["DO", "pH", "Salinity", "Transparency", "Alkalinity"],
         datasets: [

@@ -6,6 +6,7 @@ from pymongo import MongoClient
 import datetime
 import numpy as np
 import shap  # For feature importance
+import pickle
 
 # Initialize Flask app
 app = Flask(__name__)
@@ -17,7 +18,15 @@ def home():
     return jsonify({"message": "Welcome to the Shrimp Prediction API!"})
 
 
-# Load the trained model for prediction and anomaly detection
+# loading the anomaly detection model
+try:
+    with open('anomaly-detection.pkl', 'rb') as pickle_file:
+        anomaly_model = pickle.load(pickle_file)
+except FileNotFoundError:
+    print("Error: file not found")
+    anomaly_model = None
+
+# Load the trained model for prediction
 model = joblib.load('random_forest_model.pkl')
 
 # MongoDB connection URI
@@ -82,6 +91,9 @@ def predict():
         prediction = model.predict(features)[0]
         prediction_label = "Harvestable Shrimp Zone" if prediction == 1 else "Non-Harvestable Shrimp Zone"
 
+        # detecting anomalies using trained isolation forest model
+        is_anomaly = anomaly_model.predict(features)[0]
+
         # Calculate feature importance dynamically (using SHAP)
         explainer = shap.TreeExplainer(model)
         shap_values = explainer.shap_values(features)
@@ -118,6 +130,7 @@ def predict():
                 'labels': ['DOC', 'pH', 'Salinity', 'Transparency', 'Alkalinity'],
                 'values': feature_importance
             },
+            'anomaly_detected': True if is_anomaly == -1 else False
         }), 200
 
     except Exception as e:
