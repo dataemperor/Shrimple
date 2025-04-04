@@ -3,6 +3,8 @@ import { Chart, CategoryScale, LinearScale, BarController, BarElement } from "ch
 import { Droplet, FlaskConical, Waves, Eye, AlignLeft, Sparkles, MapPin,CompassIcon, ArrowRightIcon, CheckCircleIcon, Loader2Icon, LocateIcon} from "lucide-react";
 import "../styles/predict.css";
 import { toast } from "sonner";
+import jsPDF from "jspdf";
+import html2canvas from "html2canvas";
 
 // Register the required components with Chart.js
 Chart.register(CategoryScale, LinearScale, BarController, BarElement);
@@ -213,6 +215,49 @@ function Predict() {
     }
   };
 
+  //downloading results
+  const downloadAsPDF = () => {
+    const element = document.getElementById("prediction-results");
+    
+    if (!element) {
+      console.error("Prediction results section not found!");
+      toast.error("Prediction results not found!");
+      return;
+    }
+  
+    html2canvas(element, { scale: 2 }).then((canvas) => {
+      const imgData = canvas.toDataURL("image/png");
+      const pdf = new jsPDF("p", "mm", "a4");
+      
+      const imgWidth = 190; 
+      const imgHeight = (canvas.height * imgWidth) / canvas.width;
+      
+      pdf.addImage(imgData, "PNG", 10, 10, imgWidth, imgHeight);
+      pdf.save("Prediction_Result.pdf");
+  
+      toast.success("PDF downloaded successfully!");
+    });
+  };
+  
+  const downloadAsPNG = () => {
+    const element = document.getElementById("prediction-results");
+  
+    if (!element) {
+      console.error("Prediction results section not found!");
+      toast.error("Prediction results not found!");
+      return;
+    }
+  
+    html2canvas(element, { scale: 2 }).then((canvas) => {
+      const link = document.createElement("a");
+      link.href = canvas.toDataURL("image/png");
+      link.download = "Prediction_Result.png";
+      link.click();
+  
+      toast.success("PNG downloaded successfully!");
+    });
+  };
+
   useEffect(() => {
     if (chartRef.current) {
       chartRef.current.destroy();
@@ -406,20 +451,20 @@ function Predict() {
           </div>
   
           {/* Prediction Results Section */}
+          {/* Prediction Results Section */}
           <div className="results-card">
             {prediction !== null ? (
-              <>
+              <div id="prediction-results">
                 <div className="results-header">
                   <h2 className="results-title">Prediction Results</h2>
                 </div>
-  
+
                 <div className="prediction-result">
                   <div className="prediction-value">
                     <span className="prediction-label">Predicted Harvest</span>
                     <span className="prediction-number">{prediction}</span>
                   </div>
-  
-                  {/* Display Confidence */}
+
                   {confidence && (
                     <div className="confidence-meter">
                       <div className="confidence-header">
@@ -434,28 +479,42 @@ function Predict() {
                       </div>
                     </div>
                   )}
-  
-                  {/* Display selected location */}
+
                   {location.latitude && location.longitude && (
                     <div className="location-info">
                       <h4 className="location-label">
                         <MapPin size={18} /> Selected Location
                       </h4>
-                      {searchTerm && <p className="location-full-address">{searchTerm}</p>}
-                      <p><strong>Latitude:</strong> {location.latitude}</p>
-                      <p><strong>Longitude:</strong> {location.longitude}</p>
+                      {searchTerm && (
+                        <p className="location-full-address">{searchTerm}</p>
+                      )}
+                      <p>
+                        <strong>Latitude:</strong> {location.latitude}
+                      </p>
+                      <p>
+                        <strong>Longitude:</strong> {location.longitude}
+                      </p>
                     </div>
                   )}
                 </div>
-  
-                {/* Display Chart */}
+
                 {graphData && (
                   <div className="chart-container">
                     <h3 className="chart-title">Feature Importance</h3>
                     <canvas id="featureChart"></canvas>
                   </div>
                 )}
-              </>
+
+                {/* Add download buttons here if you haven't already */}
+                <div className="download-buttons">
+                  <button className="download-btn pdf-btn" onClick={downloadAsPDF}>
+                    Download as PDF
+                  </button>
+                  <button className="download-btn png-btn" onClick={downloadAsPNG}>
+                    Download as PNG
+                  </button>
+                </div>
+              </div>
             ) : (
               <div className="empty-state">
                 <CompassIcon size={48} className="empty-icon" />
@@ -466,6 +525,7 @@ function Predict() {
               </div>
             )}
           </div>
+
         </div>
       </div>
     </div>
