@@ -11,13 +11,14 @@ import shap  # For feature importance
 app = Flask(__name__)
 CORS(app)
 
+
 @app.route('/')
 def home():
     return jsonify({"message": "Welcome to the Shrimp Prediction API!"})
 
+
 # Load the trained model for prediction and anomaly detection
 model = joblib.load('random_forest_model.pkl')
-anomaly_detection_model = joblib.load('anomaly_detection.pkl')
 
 # MongoDB connection URI
 uri = "mongodb+srv://shrimple:123shrimple@shrimple.ar5le.mongodb.net/?retryWrites=true&w=majority&appName=shrimple"
@@ -40,6 +41,7 @@ def predict():
     try:
         # Get input data from the frontend request
         data = request.get_json()
+        print("Received data:", data)
 
         # Validate input data
         if not all(k in data for k in ('doc', 'ph', 'salinity', 'transparency', 'alkalinity')):
@@ -56,21 +58,9 @@ def predict():
         salinity = float(data['salinity'])
         transparency = float(data['transparency'])
         alkalinity = float(data['alkalinity'])
-        
-        # Anomaly Detection 
-        features_anomaly = np.array([[doc, ph, salinity, transparency, alkalinity]])
-        is_anomaly = anomaly_detection_model.predict(features_anomaly)[0]
-        anomaly_detection_score = anomaly_detection_model.decision_function(features_anomaly)[0]
 
-        if is_anomaly == 1:
-            return jsonify({
-                'anomaly_detected': True,
-                'anomaly_detection_score': anomaly_detection_score
-            }), 200
-
-        if doc<3:
-            return jsonify({'prediction':'Unbreedable Shrimp Zone','reason':'DOC is below the acceptable threshold'}), 200
-
+        if doc < 3:
+            return jsonify({'prediction': 'Unbreedable Shrimp Zone', 'reason': 'DOC is below the acceptable threshold'}), 200
 
         # Define hard reject ranges (extreme values)
         hard_limits = {
@@ -85,8 +75,6 @@ def predict():
             if locals()[param] < min_limit or locals()[param] > max_limit:
                 return jsonify({'prediction': 'Non-Harvestable Shrimp Zone', 'reason': f'{param} is completely out of range'}), 200
 
-        
-
         # Prepare data for model prediction
         features = np.array([[doc, ph, salinity, transparency, alkalinity]])
 
@@ -97,7 +85,8 @@ def predict():
         # Calculate feature importance dynamically (using SHAP)
         explainer = shap.TreeExplainer(model)
         shap_values = explainer.shap_values(features)
-        feature_importance = shap_values[0].tolist()  # SHAP values for the input
+        # SHAP values for the input
+        feature_importance = shap_values[0].tolist()
 
         # Record user input and prediction result in MongoDB
         prediction_data = {
@@ -123,19 +112,17 @@ def predict():
         # Return the prediction result with feature importance
         return jsonify({
             'prediction': prediction_label,
-            'confidence': max(model.predict_proba(features)[0]) * 100,  # Confidence in percentage
+            # Confidence in percentage
+            'confidence': max(model.predict_proba(features)[0]) * 100,
             'graph_data': {
                 'labels': ['DOC', 'pH', 'Salinity', 'Transparency', 'Alkalinity'],
                 'values': feature_importance
             },
-            'anomaly_detected': bool(is_anomaly),
-            'anomaly_detection_score': anomaly_detection_score
         }), 200
 
     except Exception as e:
         return jsonify({'error': str(e)}), 500
 
 
-
 if __name__ == "__main__":
-    app.run(debug=True)
+    app.run(debug=True, port=5001)

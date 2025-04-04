@@ -1,6 +1,6 @@
 import React, { useState, useEffect, useRef } from "react";
 import { Chart, CategoryScale, LinearScale, BarController, BarElement } from "chart.js";
-import { Droplet, FlaskConical, Waves, Eye, AlignLeft, Sparkles, MapPin,CompassIcon, ArrowRightIcon, CheckCircleIcon, Loader2Icon, LocateIcon} from "lucide-react";
+import { Droplet, FlaskConical, Waves, Eye, AlignLeft, Sparkles, MapPin, CompassIcon, ArrowRightIcon, CheckCircleIcon, Loader2Icon, LocateIcon } from "lucide-react";
 import "../styles/predict.css";
 import { toast } from "sonner";
 
@@ -34,7 +34,7 @@ function Predict() {
   useEffect(() => {
     function handleClickOutside(event) {
       if (
-        suggestionsRef.current && 
+        suggestionsRef.current &&
         !suggestionsRef.current.contains(event.target) &&
         searchInputRef.current &&
         !searchInputRef.current.contains(event.target)
@@ -42,7 +42,7 @@ function Predict() {
         setSuggestions([]);
       }
     }
-    
+
     document.addEventListener("mousedown", handleClickOutside);
     return () => {
       document.removeEventListener("mousedown", handleClickOutside);
@@ -64,7 +64,7 @@ function Predict() {
 
     if (input.length > 2) {
       setIsSearching(true);
-      
+
       // Debounce the API call
       clearTimeout(window.searchTimeout);
       window.searchTimeout = setTimeout(async () => {
@@ -102,7 +102,7 @@ function Predict() {
     });
     setSearchTerm(suggestion.displayName);
     setSuggestions([]);
-    
+
     // Add a success toast
     toast.success("Location selected successfully", {
       description: suggestion.mainName,
@@ -115,23 +115,23 @@ function Predict() {
       toast.info("Fetching your location...", {
         icon: <Loader2Icon className="animate-spin" />
       });
-      
+
       navigator.geolocation.getCurrentPosition(
         async (position) => {
           const lat = position.coords.latitude.toFixed(6);
           const lon = position.coords.longitude.toFixed(6);
-          
+
           setLocation({
             latitude: lat,
             longitude: lon,
           });
-          
+
           // Perform reverse geocoding to get address
           try {
             const url = `https://nominatim.openstreetmap.org/reverse?lat=${lat}&lon=${lon}&format=json`;
             const response = await fetch(url);
             const data = await response.json();
-            
+
             if (data && data.display_name) {
               setSearchTerm(data.display_name);
               toast.success("Current location detected", {
@@ -182,7 +182,7 @@ function Predict() {
         location, // Include selected location
       };
 
-      const response = await fetch("http://127.0.0.1:5000/predict", {
+      const response = await fetch("http://127.0.0.1:5001/predict", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify(payload),
@@ -243,12 +243,12 @@ function Predict() {
               },
             },
             scales: {
-              y: { 
-                beginAtZero: true, 
+              y: {
+                beginAtZero: true,
                 grid: { color: "rgba(0, 0, 0, 0.05)" },
                 ticks: { font: { size: 11 } }
               },
-              x: { 
+              x: {
                 grid: { display: false },
                 ticks: { font: { size: 11 } }
               },
@@ -275,7 +275,7 @@ function Predict() {
           <h1 className="predict-main-title">Shrimp Harvest Predictor</h1>
           <p className="predict-subtitle">Enter water parameters to predict harvest outcomes</p>
         </div>
-  
+
         <div className="predict-grid">
           {/* Prediction Form Section */}
           <div className="predict-form-card">
@@ -283,11 +283,11 @@ function Predict() {
               <Sparkles className="icon-sparkle" />
               <h2 className="predict-form-title">Water Parameters</h2>
             </div>
-  
+
             <form className="predict-form" onSubmit={(e) => e.preventDefault()}>
               {/* Display error messages */}
               {error && <div className="error-message">{error}</div>}
-  
+
               {/* Input Fields for Parameters */}
               {inputFields.map(({ name, label, icon }) => (
                 <div key={name} className="input-group">
@@ -306,7 +306,7 @@ function Predict() {
                   </div>
                 </div>
               ))}
-  
+
               {/* Location Search Input */}
               <div className="input-group">
                 <label className="input-label">Search for a Location</label>
@@ -347,7 +347,7 @@ function Predict() {
                   )}
                 </div>
               </div>
-  
+
               {/* Latitude and Longitude Inputs */}
               <div className="location-input-group">
                 <div className="location-input-wrapper">
@@ -375,7 +375,7 @@ function Predict() {
                   />
                 </div>
               </div>
-  
+
               {/* Location Buttons */}
               <button
                 type="button"
@@ -385,11 +385,11 @@ function Predict() {
                 <LocateIcon size={18} />
                 Use My Current Location
               </button>
-  
+
               {/* Predict Button */}
-              <button 
-                className="predict-button" 
-                onClick={handlePredict} 
+              <button
+                className="predict-button"
+                onClick={handlePredict}
                 disabled={loading}
               >
                 {loading ? (
@@ -406,7 +406,7 @@ function Predict() {
               </button>
             </form>
           </div>
-  
+
           {/* Prediction Results Section */}
           <div className="results-card">
             {prediction !== null ? (
@@ -414,13 +414,13 @@ function Predict() {
                 <div className="results-header">
                   <h2 className="results-title">Prediction Results</h2>
                 </div>
-  
+
                 <div className="prediction-result">
                   <div className="prediction-value">
                     <span className="prediction-label">Predicted Harvest</span>
                     <span className="prediction-number">{prediction}</span>
                   </div>
-  
+
                   {/* Display Confidence */}
                   {confidence && (
                     <div className="confidence-meter">
@@ -436,7 +436,7 @@ function Predict() {
                       </div>
                     </div>
                   )}
-  
+
                   {/* Display selected location */}
                   {location.latitude && location.longitude && (
                     <div className="location-info">
@@ -449,7 +449,7 @@ function Predict() {
                     </div>
                   )}
                 </div>
-  
+
                 {/* Display Chart */}
                 {graphData && (
                   <div className="chart-container">
