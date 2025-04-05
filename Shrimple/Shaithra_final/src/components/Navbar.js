@@ -23,6 +23,7 @@ const CustomNavbar = () => {
     { path: "/predict", label: "Prediction", icon: <Activity size={18} /> },
     { path: "/signup", label: "Sign Up", icon: <UserPlus size={18} /> },
     { path: "/Datainsights", label: "Data Insights", icon: <LogIn size={18} /> },
+    { path: "/contact", label: "Contact Us", icon: <UserPlus size={18} /> }
   ];
   
   const toggleMenu = () => setIsMenuOpen(!isMenuOpen);
