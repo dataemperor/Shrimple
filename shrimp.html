@@ -1,0 +1,566 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Data Insights Dashboard</title>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/3.9.1/chart.min.js"></script>
+  <style>
+    :root {
+      --primary: #4AEADC;
+      --primary-dark: #168077;
+      --accent: #ff7f30;
+      --text: #4f535a;
+      --background: #f0f4f4;
+      --card: #ffffff;
+      --border: #e2e8f0;
+    }
+
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+      transition: all 0.3s ease;
+    }
+
+    body {
+      font-family: system-ui, -apple-system, sans-serif;
+      background-color: var(--background);
+      color: var(--text);
+      line-height: 1.5;
+    }
+
+    header {
+      background-color: var(--primary-dark);
+      padding: 1rem;
+      box-shadow: 0 1px 3px 0 rgb(0 0 0 / 0.1);
+      position: sticky;
+      top: 0;
+      z-index: 50;
+    }
+
+    .header-content {
+      max-width: 1200px;
+      margin: 0 auto;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+
+    .logo {
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+      font-weight: 600;
+      color: #ffffff;
+    }
+
+    .logo svg {
+      width: 24px;
+      height: 24px;
+    }
+
+    nav {
+      display: flex;
+      gap: 1.5rem;
+    }
+
+    nav a {
+      color: #ffffff;
+      text-decoration: none;
+      font-weight: 500;
+      padding: 0.5rem 1rem;
+      border-radius: 0.5rem;
+      transition: all 0.2s ease;
+    }
+
+    nav a:hover {
+      background-color: rgba(255, 255, 255, 0.15);
+    }
+
+    .active-nav {
+      background-color: var(--accent);
+    }
+
+    .container {
+      max-width: 1200px;
+      margin: 2rem auto;
+      padding: 0 1rem;
+    }
+
+    .page-title {
+      color: var(--primary-dark);
+      margin-bottom: 1.5rem;
+      font-size: 1.5rem;
+      display: flex;
+      align-items: center;
+      gap: 0.75rem;
+    }
+
+    .page-title svg {
+      width: 28px;
+      height: 28px;
+      color: var(--accent);
+    }
+
+    .dashboard-grid {
+      display: grid;
+      gap: 1.5rem;
+      margin-bottom: 2rem;
+    }
+
+    .card {
+      background-color: var(--card);
+      border-radius: 1rem;
+      padding: 1.5rem;
+      box-shadow: 0 3px 10px rgba(0, 0, 0, 0.05);
+    }
+
+    .filters-card {
+      background-color: var(--primary-dark);
+      color: white;
+    }
+
+    .filters {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 1rem;
+      align-items: center;
+    }
+
+    .filter-group {
+      display: flex;
+      flex-direction: column;
+      gap: 0.5rem;
+    }
+
+    .filters-card label {
+      color: rgba(255, 255, 255, 0.9);
+      font-size: 0.875rem;
+      font-weight: 500;
+    }
+
+    label {
+      font-size: 0.875rem;
+      font-weight: 500;
+      color: var(--text);
+    }
+
+    select {
+      padding: 0.5rem 2rem 0.5rem 1rem;
+      border-radius: 0.5rem;
+      border: 1px solid rgba(255, 255, 255, 0.2);
+      background-color: rgba(255, 255, 255, 0.1);
+      color: white;
+      font-size: 0.875rem;
+      cursor: pointer;
+      appearance: none;
+      background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' fill='none' viewBox='0 0 24 24' stroke='white'%3E%3Cpath stroke-linecap='round' stroke-linejoin='round' stroke-width='2' d='M19 9l-7 7-7-7'%3E%3C/path%3E%3C/svg%3E");
+      background-repeat: no-repeat;
+      background-position: right 0.5rem center;
+      background-size: 1.5rem;
+    }
+
+    select:hover {
+      border-color: var(--accent);
+      background-color: rgba(255, 255, 255, 0.15);
+    }
+
+    .chart-container {
+      position: relative;
+      height: 400px;
+      margin-top: 1.5rem;
+    }
+
+    .stats-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+      gap: 1rem;
+      margin-bottom: 1.5rem;
+    }
+
+    .stat-card {
+      background-color: var(--card);
+      padding: 1.5rem;
+      border-radius: 1rem;
+      box-shadow: 0 3px 10px rgba(0, 0, 0, 0.05);
+      display: flex;
+      flex-direction: column;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .stat-card::before {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: 0;
+      right: 0;
+      height: 0.25rem;
+      background-color: var(--primary);
+    }
+
+    .stat-card:nth-child(2)::before {
+      background-color: var(--accent);
+    }
+
+    .stat-card:nth-child(3)::before {
+      background-color: var(--primary-dark);
+    }
+
+    .stat-card:nth-child(4)::before {
+      background-color: var(--text);
+    }
+
+    .stat-icon {
+      position: absolute;
+      top: 1rem;
+      right: 1rem;
+      width: 2rem;
+      height: 2rem;
+      color: rgba(0, 0, 0, 0.1);
+    }
+
+    .stat-title {
+      font-size: 0.875rem;
+      color: var(--text);
+      margin-bottom: 0.75rem;
+    }
+
+    .stat-value {
+      font-size: 1.75rem;
+      font-weight: 700;
+      color: var(--primary-dark);
+      margin-bottom: 0.5rem;
+    }
+
+    .stat-card:nth-child(2) .stat-value {
+      color: var(--accent);
+    }
+
+    .stat-card:nth-child(3) .stat-value {
+      color: var(--primary-dark);
+    }
+
+    .stat-card:nth-child(4) .stat-value {
+      color: var(--text);
+    }
+
+    .stat-trend {
+      display: flex;
+      align-items: center;
+      font-size: 0.813rem;
+      gap: 0.25rem;
+    }
+
+    .trend-up {
+      color: var(--accent);
+    }
+
+    .trend-down {
+      color: var(--primary-dark);
+    }
+
+    .section-title {
+      font-size: 1.25rem;
+      font-weight: 600;
+      margin-bottom: 1rem;
+      color: var(--primary-dark);
+    }
+
+    footer {
+      background-color: var(--primary-dark);
+      padding: 1.5rem;
+      text-align: center;
+      margin-top: 2rem;
+      color: white;
+    }
+
+    footer a {
+      color: var(--primary);
+      text-decoration: none;
+    }
+
+    footer a:hover {
+      color: var(--accent);
+      text-decoration: underline;
+    }
+
+    @media (max-width: 768px) {
+      .header-content {
+        flex-direction: column;
+        gap: 1rem;
+      }
+
+      nav {
+        width: 100%;
+        justify-content: center;
+      }
+    }
+  </style>
+</head>
+<body>
+  <header>
+    <div class="header-content">
+      <div class="logo">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+          <path d="M12 2L2 7l10 5 10-5-10-5zM2 17l10 5 10-5M2 12l10 5 10-5"/>
+        </svg>
+        <span>Data Insights</span>
+      </div>
+      <nav>
+        <a href="#dashboard" class="active-nav">Dashboard</a>
+        <a href="#predict">Predict</a>
+        <a href="#analysis">Analysis</a>
+        <a href="#settings">Settings</a>
+      </nav>
+    </div>
+  </header>
+
+  <main class="container">
+    <h1 class="page-title">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+        <path d="M12 6.253v13m0-13C10.832 5.477 9.246 5 7.5 5S4.168 5.477 3 6.253v13C4.168 18.477 5.754 18 7.5 18s3.332.477 4.5 1.253m0-13C13.168 5.477 14.754 5 16.5 5c1.747 0 3.332.477 4.5 1.253v13C19.832 18.477 18.247 18 16.5 18c-1.746 0-3.332.477-4.5 1.253" />
+      </svg>
+      Farm Performance Dashboard
+    </h1>
+
+    <div class="stats-grid">
+      <div class="stat-card">
+        <svg class="stat-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+          <path d="M5 8h14M5 8a2 2 0 110-4h14a2 2 0 110 4M5 8v10a2 2 0 002 2h10a2 2 0 002-2V8m-9 4h4" />
+        </svg>
+        <div class="stat-title">Total Harvest</div>
+        <div class="stat-value">127.5K kg</div>
+        <div class="stat-trend trend-up">
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+            <path d="M5 15l7-7 7 7" />
+          </svg>
+          8.2% from last period
+        </div>
+      </div>
+      <div class="stat-card">
+        <svg class="stat-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+          <path d="M13 7h8m0 0v8m0-8l-8 8-4-4-6 6" />
+        </svg>
+        <div class="stat-title">Growth Rate</div>
+        <div class="stat-value">+12.3%</div>
+        <div class="stat-trend trend-up">
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+            <path d="M5 15l7-7 7 7" />
+          </svg>
+          3.1% from last period
+        </div>
+      </div>
+      <div class="stat-card">
+        <svg class="stat-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+          <path d="M19 11H5m14 0a2 2 0 012 2v6a2 2 0 01-2 2H5a2 2 0 01-2-2v-6a2 2 0 012-2m14 0V9a2 2 0 00-2-2M5 11V9a2 2 0 012-2m0 0V5a2 2 0 012-2h6a2 2 0 012 2v2M7 7h10" />
+        </svg>
+        <div class="stat-title">Disease Index</div>
+        <div class="stat-value">0.12</div>
+        <div class="stat-trend trend-down">
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+            <path d="M19 9l-7 7-7-7" />
+          </svg>
+          2.3% from last period
+        </div>
+      </div>
+      <div class="stat-card">
+        <svg class="stat-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+          <path d="M5 3v4M3 5h4M6 17v4m-2-2h4m5-16l2.286 6.857L21 12l-5.714 2.143L13 21l-2.286-6.857L5 12l5.714-2.143L13 3z" />
+        </svg>
+        <div class="stat-title">Water Quality</div>
+        <div class="stat-value">95%</div>
+        <div class="stat-trend trend-up">
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+            <path d="M5 15l7-7 7 7" />
+          </svg>
+          1.5% from last period
+        </div>
+      </div>
+    </div>
+
+    <div class="dashboard-grid">
+      <div class="card filters-card">
+        <h2 class="section-title" style="color: white; margin-bottom: 1.5rem;">Filters</h2>
+        <div class="filters">
+          <div class="filter-group">
+            <label for="region">Region</label>
+            <select id="region">
+              <option value="all">All Regions</option>
+              <option value="north">North</option>
+              <option value="south">South</option>
+              <option value="east">East</option>
+              <option value="west">West</option>
+            </select>
+          </div>
+          <div class="filter-group">
+            <label for="year">Time Period</label>
+            <select id="year">
+              <option value="all">All Time</option>
+              <option value="2025">2025</option>
+              <option value="2024">2024</option>
+              <option value="2023">2023</option>
+            </select>
+          </div>
+          <div class="filter-group">
+            <label for="parameter">Metric</label>
+            <select id="parameter">
+              <option value="harvest">Harvest Yield</option>
+              <option value="environmental">Environmental Impact</option>
+              <option value="disease">Disease Prevalence</option>
+            </select>
+          </div>
+        </div>
+      </div>
+      
+      <div class="card">
+        <h2 class="section-title">Performance Metrics</h2>
+        <div class="chart-container">
+          <canvas id="chart"></canvas>
+        </div>
+      </div>
+    </div>
+  </main>
+
+  <footer>
+    <p>© 2025 Data Insights Dashboard | <a href="#privacy">Privacy Policy</a> | <a href="#terms">Terms of Service</a></p>
+  </footer>
+
+  <script>
+    const ctx = document.getElementById('chart').getContext('2d');
+    
+    const datasets = {
+      harvest: {
+        label: 'Harvest Yield (tons)',
+        data: [65, 78, 90, 85, 95, 110],
+        backgroundColor: 'rgba(74, 234, 220, 0.2)',
+        borderColor: '#4AEADC',
+      },
+      environmental: {
+        label: 'Environmental Impact Score',
+        data: [85, 88, 92, 89, 91, 94],
+        backgroundColor: 'rgba(255, 127, 48, 0.2)',
+        borderColor: '#ff7f30',
+      },
+      disease: {
+        label: 'Disease Prevalence Index',
+        data: [0.15, 0.12, 0.10, 0.08, 0.09, 0.07],
+        backgroundColor: 'rgba(79, 83, 90, 0.2)',
+        borderColor: '#4f535a',
+      }
+    };
+
+    const labels = ['January', 'February', 'March', 'April', 'May', 'June'];
+
+    Chart.defaults.color = "#4f535a";
+    Chart.defaults.font.family = "system-ui, -apple-system, sans-serif";
+
+    const chart = new Chart(ctx, {
+      type: 'line',
+      data: {
+        labels: labels,
+        datasets: [{
+          ...datasets.harvest,
+          tension: 0.4,
+          borderWidth: 3,
+          pointRadius: 5,
+          pointHoverRadius: 7,
+          pointBackgroundColor: '#ffffff',
+          pointBorderWidth: 2,
+        }]
+      },
+      options: {
+        responsive: true,
+        maintainAspectRatio: false,
+        plugins: {
+          legend: {
+            position: 'top',
+            labels: {
+              usePointStyle: true,
+              padding: 16,
+              font: {
+                size: 12,
+                weight: 500
+              }
+            }
+          },
+          tooltip: {
+            backgroundColor: '#168077',
+            titleColor: '#ffffff',
+            bodyColor: '#ffffff',
+            borderWidth: 0,
+            padding: 12,
+            cornerRadius: 8,
+            displayColors: false,
+            callbacks: {
+              labelColor: function(context) {
+                return {
+                  borderColor: '#fff',
+                  backgroundColor: context.dataset.borderColor
+                };
+              }
+            }
+          },
+        },
+        scales: {
+          y: {
+            beginAtZero: true,
+            grid: {
+              color: 'rgba(226, 232, 240, 0.5)',
+            },
+            ticks: {
+              padding: 10,
+              color: '#4f535a',
+              font: {
+                size: 11
+              }
+            },
+          },
+          x: {
+            grid: {
+              display: false,
+            },
+            ticks: {
+              padding: 10,
+              color: '#4f535a',
+              font: {
+                size: 11
+              }
+            },
+          },
+        },
+        interaction: {
+          intersect: false,
+          mode: 'index',
+        },
+      },
+    });
+
+    document.getElementById('parameter').addEventListener('change', (e) => {
+      const parameter = e.target.value;
+      chart.data.datasets[0] = {
+        ...datasets[parameter],
+        tension: 0.4,
+        borderWidth: 3,
+        pointRadius: 5,
+        pointHoverRadius: 7,
+        pointBackgroundColor: '#ffffff',
+        pointBorderWidth: 2,
+      };
+      chart.update();
+    });
+
+    // Add smooth transitions when updating data
+    ['region', 'year'].forEach(id => {
+      document.getElementById(id).addEventListener('change', () => {
+        const newData = datasets[document.getElementById('parameter').value].data.map(
+          value => value * (0.9 + Math.random() * 0.2)
+        );
+        chart.data.datasets[0].data = newData;
+        chart.update('active');
+      });
+    });
+  </script>
+</body>
+</html> 
