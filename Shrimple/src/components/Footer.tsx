@@ -1,29 +1,27 @@
-import {Link} from "react-router-dom";
+import React from 'react';
+import { Container, Row, Col } from 'react-bootstrap';
 
-const Footer = () => {
-    return (
-        <>
-        <footer className="footer">
-            <div className="container">
-                <p className="mb-0">
-                    &copy; {new Date().getFullYear()} Shrimple. All rights reserved.
-                </p>
+interface FooterProps { }
 
-                <div className="mb-0">
-                    <Link aria-current="page" to="/PrivacyPolicy">Privacy Policy </Link>
-                </div>
-
-                <div className="mb-0">
-                    <Link aria-current="page" to="/TermsOfService">Terms of Service </Link>
-                </div>
-
-                <div className="mb-0">
-                    <Link aria-current="page" to="/ContactInfo">Contact Info</Link>
-                </div>
-            </div>
-        </footer>
-        </>
-    );
-}
+const Footer: React.FC<FooterProps> = () => {
+  return (
+    <footer className="bg-light py-3 mt-auto">
+      <Container>
+        <Row>
+          <Col md={6} className="text-center text-md-start">
+            &copy; {new Date().getFullYear()} Shrimple. All rights reserved
+          </Col>
+          <Col md={6} className="text-center text-md-end">
+            <ul className="list-inline mb-0">
+              <li className="list-inline-item ms-3">
+                <a href="/contact" className="text-muted">Contact Us</a>
+              </li>
+            </ul>
+          </Col>
+        </Row>
+      </Container>
+    </footer>
+  );
+};
 
 export default Footer;
