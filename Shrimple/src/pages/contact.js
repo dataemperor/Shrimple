@@ -9,9 +9,9 @@ const ContactPage = () => {
     inquiryType: "",
     message: "",
   });
-  
-  
-  
+
+
+
   const handleChange = (e) => {
     const { name, value } = e.target;
     setFormData(prev => ({
@@ -19,13 +19,13 @@ const ContactPage = () => {
       [name]: value
     }));
   };
-  
+
   const handleSubmit = (e) => {
     e.preventDefault();
     console.log("Form submitted:", formData);
-    
-    
-    
+
+
+
     // Reset form
     setFormData({
       name: "",
@@ -34,7 +34,7 @@ const ContactPage = () => {
       message: "",
     });
   };
-  
+
   return (
     <div className="contact-container">
       <div className="content">
@@ -42,11 +42,11 @@ const ContactPage = () => {
         <div className="header">
           <h1 className="title">Get in Touch with Us</h1>
           <p className="subtitle">
-          Have questions about shrimp harvesting ground predictions?
-          Need technical support or partnership opportunities? Reach out to our dedicated team and let us assist you with precision insights and innovative solutions for sustainable shrimp harvesting.
+            Have questions about shrimp harvesting ground predictions?
+            Need technical support or partnership opportunities? Reach out to our dedicated team and let us assist you with precision insights and innovative solutions for sustainable shrimp harvesting.
           </p>
         </div>
-        
+
         {/* Main content grid */}
         <div className="two-column">
           {/* Contact form card */}
@@ -55,7 +55,7 @@ const ContactPage = () => {
               <Sparkles className="sparkle-icon" />
               <h2 className="card-title">Send Us a Message</h2>
             </div>
-            
+
             <form onSubmit={handleSubmit} className="form">
               <div className="form-group">
                 <label className="label">Your Name</label>
@@ -72,7 +72,7 @@ const ContactPage = () => {
                   />
                 </div>
               </div>
-              
+
               <div className="form-group">
                 <label className="label">Your Email</label>
                 <div className="input-container">
@@ -88,7 +88,7 @@ const ContactPage = () => {
                   />
                 </div>
               </div>
-              
+
               <div className="form-group">
                 <label className="label">Inquiry Type</label>
                 <div className="input-container">
@@ -108,7 +108,7 @@ const ContactPage = () => {
                   </select>
                 </div>
               </div>
-              
+
               <div className="form-group">
                 <label className="label">Your Message</label>
                 <div className="input-container">
@@ -124,7 +124,7 @@ const ContactPage = () => {
                   />
                 </div>
               </div>
-              
+
               <button
                 type="submit"
                 className="submit-btn"
@@ -134,13 +134,13 @@ const ContactPage = () => {
               </button>
             </form>
           </div>
-          
+
           {/* Contact information card */}
           <div className="card info-card">
             <div className="card-header">
               <h2 className="card-title">Contact Information</h2>
             </div>
-            
+
             <div className="info-box">
               <div className="info-label">
                 <MapPin size={20} />
@@ -152,12 +152,12 @@ const ContactPage = () => {
                 No. 321, Galle Road,<br />
                 Colombo 03, Sri Lanka.
               </div>
-              
+
               <p><strong>Phone:</strong> +94 112437149</p>
               <p><strong>Fax:</strong> +94 112437149</p>
               <p><strong>Email:</strong> info@shrimp.lk</p>
             </div>
-            
+
             <div className="help-box">
               <div className="emoji">🤝</div>
               <h3 className="help-title">We're here to help</h3>
