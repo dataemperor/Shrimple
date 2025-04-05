@@ -7,6 +7,7 @@ import SignIn from "../pages/SignIn";
 import CustomSignUp from "../pages/CustomSignUp";
 import Map from "../pages/Map";
 import Chatbot from "../pages/Chatbot";
+import ShrimpDemandPrediction from "../pages/ShrimpDemandPrediction.jsx";
 
 const AppRoutes = () => {
   return (
@@ -19,6 +20,7 @@ const AppRoutes = () => {
       <Route path="/CustomSignUp" element={<CustomSignUp />} />
       <Route path="/Map" element={<Map />} />
       <Route path="/Chatbot" element={<Chatbot />} />
+      <Route path="/ShrimpDemandPrediction" element={<ShrimpDemandPrediction />} />
       <Route path="*" element={<Navigate to="/" />} />
     </Routes>
   );
