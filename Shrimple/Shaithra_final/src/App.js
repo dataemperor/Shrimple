@@ -5,6 +5,7 @@ import SignUp from './pages/CustomSignUp';
 import Navbar from './components/Navbar';
 import Footer from './components/Footer';  
 import Signin from './pages/SignIn' 
+import Contact from './pages/contact'
 
 function App() {
   return (
@@ -15,6 +16,7 @@ function App() {
           <Route path="/predict" element={<Predict />} />
           <Route path="/signup" element={<SignUp />} /> 
           <Route path="/signin" element={<Signin />} />
+          <Route path="/contact" element={<Contact/>}/>
         </Routes>
         <Footer />  
       </div>
