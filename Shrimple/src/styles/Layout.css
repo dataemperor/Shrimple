@@ -1,3 +1,10 @@
+html,
+body,
+#root {
+  height: 100%;
+  margin: 0%;
+}
+
 .layout-content {
-  min-height: calc(100vh - (100px + 100px));
+  flex-grow: 1;
 }

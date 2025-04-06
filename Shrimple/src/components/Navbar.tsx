@@ -16,20 +16,14 @@ function Navbar() {
             <li className="nav-item-home">
               <Link className="nav-link active" aria-current="page" to="/Home">Home</Link>
             </li>
-            <li className="nav-item-about">
-              <Link className="nav-link active" aria-current="page" to="/About">About</Link>
-            </li>
-            <li>
-              <Link className="nav-link active" aria-current="page" to="/Chatbot">Chatbot</Link>
+            <li className="nav-item-information">
+              <Link className="nav-link active" aria-current="page" to="/ShrimpInformation">Shrimp Information</Link>
             </li>
             <li className="nav-item-predict">
               <Link className="nav-link active" aria-current="page" to="/Predict">Predict Ground</Link>
             </li>
             <li className="nav-item-demand">
               <Link className="nav-link active" aria-current="page" to="/ShrimpDemandPrediction">Demand Prediction</Link>
-            </li>
-            <li className="nav-item-map">
-              <Link className="nav-link active" aria-current="page" to="/Map">Map</Link>
             </li>
             <li className="nav-item-contact">
               <Link className="nav-link active" aria-current="page" to="/Contact">Contact</Link>

@@ -60,7 +60,6 @@
 
 .chat-input-container {
   display: flex;
-  padding: 10px;
   border-top: 1px solid #ccc;
 }
 
@@ -73,7 +72,7 @@
 
 .chat-input-container button {
   margin-left: 8px;
-  padding: 8px 12px;
+  margin-bottom: 0;
   border: none;
   background-color: #FF7F30;
   color: white;
@@ -124,6 +123,4 @@
   border: none;
   font-size: 20px;
   cursor: pointer;
-}	
-
-
+}
