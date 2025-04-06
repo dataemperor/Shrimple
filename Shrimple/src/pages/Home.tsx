@@ -12,6 +12,9 @@ const Home = () => {
           farming data, our system provides accurate insights to optimize shrimp
           farm site selection.
         </p>
+        <p className="home-aim">
+          Our aim is to increase the profitability of the Shrimp Aquaculture business through industry related predictions that can be used to make better decisions.
+        </p>
       </div>
     </div>
   );
