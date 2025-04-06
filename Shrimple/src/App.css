@@ -39,10 +39,16 @@ body,
 }
 
 .footer {
-  background-color: lightblue;
   text-align: center;
   padding: 10px;
   position: fixed;
   width: 100%;
   bottom: 0;
+  background-color: #168077 !important;
+  text-color: white;
+}
+
+.layout-content {
+  background-image: url('bg.jpg');
+  background-size: cover;
 }
