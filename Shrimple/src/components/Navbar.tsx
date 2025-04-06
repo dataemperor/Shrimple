@@ -28,9 +28,6 @@ function Navbar() {
             <li className="nav-item-demand">
               <Link className="nav-link active" aria-current="page" to="/ShrimpDemandPrediction">Demand Prediction</Link>
             </li>
-            <li className="nav-item-map">
-              <Link className="nav-link active" aria-current="page" to="/Map">Map</Link>
-            </li>
             <li className="nav-item-contact">
               <Link className="nav-link active" aria-current="page" to="/Contact">Contact</Link>
             </li>

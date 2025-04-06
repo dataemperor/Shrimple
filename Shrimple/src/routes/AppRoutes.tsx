@@ -5,7 +5,6 @@ import Home from "../pages/Home";
 import Predict from "../pages/Predict";
 import SignIn from "../pages/SignIn";
 import CustomSignUp from "../pages/CustomSignUp";
-import Map from "../pages/Map";
 import Chatbot from "../pages/Chatbot";
 import ShrimpDemandPrediction from "../pages/ShrimpDemandPrediction.jsx";
 import ShrimpInformation from "../pages/ShrimpInformation.tsx";
@@ -19,7 +18,6 @@ const AppRoutes = () => {
       <Route path="/predict" element={<Predict />} />
       <Route path="/SignIn" element={<SignIn />} />
       <Route path="/CustomSignUp" element={<CustomSignUp />} />
-      <Route path="/Map" element={<Map />} />
       <Route path="/Chatbot" element={<Chatbot />} />
       <Route path="/ShrimpDemandPrediction" element={<ShrimpDemandPrediction />} />
       <Route path="/ShrimpInformation" element={<ShrimpInformation />} />
